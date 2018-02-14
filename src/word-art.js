@@ -27,11 +27,32 @@ $(document).ready(() => {
     return `<p class="lead text-success text-center">${getExpression()} Your SVG file has been generated</p>
     <a href="${url}" target="_blank" role="button" class="btn btn-md btn-success">Download SVG</a>`
   };
-  const error = (err) => `<p class="text-danger">There was an error generating your SVG file: ${err}</p>`;
+  const error = (err) => `<p class="text-danger">There was an error generating your SVG file<br/>Huge books (like the Bible) can sometimes overload the server.</p>`;
+
+
+  const stripText = (txt) => {
+    return txt
+        .replace(/[‘’\u2018\u2019\u201A]/gm, "'") // smart single quotes and apostrophe
+        .replace(/[“”\u201C\u201D\u201E]/gm, '"') // smart double quotes
+        .replace(/\u2026/gm, "...")               // ellipsis
+        .replace(/\u02C6/gm, "^")                 // circumflex
+        .replace(/\u2039/gm, "<")                 // open angle bracket
+        .replace(/\u203A/gm, ">")                 // close angle bracket
+        .replace(/[\u02DC\u00A0]/gm, " ")         // spaces
+        .replace(/\d+:\d+/gm, " ")                // bible verses, lol, i.e. 31:12
+        .replace(/[\u2013\u2014,:;\-\+]/gm, " ")  // unnecessary punctuation
+        .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
+        .replace(/(\r\n|\n|\r)/gm, " ")           // strip newlines
+        .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
+  };
 
   const getText = (txt) => {
-    txt = txt.trim().replace(/[“”‘’]/g, '');
-    return txt.toLowerCase()
+    console.log('Text length before stripping: ' + txt.length)
+    txt = stripText(txt);
+    console.log('Text length after stripping: ' + txt.length)
+    console.log('txt', {txt})
+    // TODO if txt.length > 300k, parse it on the frontend
+    return txt.toLowerCase();
   };
 
   const getColor = (color) => color.trim().length > 0 ? color.trim() : null;
@@ -91,8 +112,8 @@ $(document).ready(() => {
           end_load()
         })
         .catch(err => {
-          console.log(err);
-          results.html(error(res.err));
+          console.log('err', err);
+          results.html(error());
           end_load()
         })
 
