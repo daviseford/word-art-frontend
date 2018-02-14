@@ -1,9 +1,6 @@
 _site
 .sass-cache
-.jekyll-metadata
 .idea
-.min.css
-.min.js
-dist/
+_dist/
 build_log.txt
 

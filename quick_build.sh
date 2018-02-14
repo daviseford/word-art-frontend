@@ -15,9 +15,10 @@ SITE_BUILD_DIR='./_dist/'                       # Where your site is generated
 CSS_BUILD_DIR="${SITE_BUILD_DIR}"   # Generated CSS location
 JS_BUILD_DIR="${SITE_BUILD_DIR}"     # Generated JS location
 
-CSS_SRC_DIR='./src/'                     # Source CSS
-JS_SRC_DIR='./src/'                       # Source JS
-IMG_SRC_DIR='./src/'                     # Source images
+SITE_SRC_DIR="./src/"
+CSS_SRC_DIR="${SITE_SRC_DIR}"                     # Source CSS
+JS_SRC_DIR="${SITE_SRC_DIR}"                       # Source JS
+IMG_SRC_DIR="${SITE_SRC_DIR}"                     # Source images
 
 # BUILD OPTIONS - EDIT THESE
 IS_JEKYLL_SITE=false         # If true, will run jekyll build process
