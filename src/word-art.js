@@ -27,9 +27,17 @@ $(document).ready(() => {
     return `<p class="lead text-success text-center">${getExpression()} Your SVG file has been generated</p>
     <a href="${url}" target="_blank" role="button" class="btn btn-md btn-success">Download SVG</a>`
   };
-  const error = (err) => `<p class="text-danger">There was an error generating your SVG file<br/>Huge books (like the Bible) can sometimes overload the server.</p>`;
+  const error = (err) => {
+    return `<p class="text-danger">There was an error generating your SVG file: 
+    <strong>${err}</strong>
+    <br/>Huge books (like the Bible) can sometimes overload the server.</p>`;
+  };
 
-
+  /**
+   * Removes unnecessary characters from a string
+   * @param txt
+   * @returns {string}
+   */
   const stripText = (txt) => {
     return txt
         .replace(/[‘’\u2018\u2019\u201A]/gm, "'") // smart single quotes and apostrophe
@@ -47,12 +55,12 @@ $(document).ready(() => {
   };
 
   const getText = (txt) => {
-    console.log('Text length before stripping: ' + txt.length)
-    txt = stripText(txt);
-    console.log('Text length after stripping: ' + txt.length)
-    console.log('txt', {txt})
+    console.log('Text length before stripping: ' + txt.length);
+    txt = stripText(txt).toLowerCase();
+    console.log('Text length after stripping: ' + txt.length);
     // TODO if txt.length > 300k, parse it on the frontend
-    return txt.toLowerCase();
+    console.log('Stripped text:', {txt});
+    return txt;
   };
 
   const getColor = (color) => color.trim().length > 0 ? color.trim() : null;
@@ -113,7 +121,7 @@ $(document).ready(() => {
         })
         .catch(err => {
           console.log('err', err);
-          results.html(error());
+          results.html(error(err.statusText));
           end_load()
         })
 
