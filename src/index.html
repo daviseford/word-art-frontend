@@ -18,7 +18,7 @@
     <meta property="og:image" content="https://daviseford.com/blog/public/img/thumbnails/cliff_stoll/cuckoos_egg.png">
     <meta property="profile:first_name" content="Davis">
     <meta property="profile:last_name" content="Ford">
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="en_US"/>
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="RSS" href="/blog/atom.xml">
 </head>
@@ -57,74 +57,93 @@
     </div>
 </header>
 
+<div class="container">
 
-<div class="row">
     <div class="col-xs-10 offset-xs-1 col-sm-8 offset-sm-2 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+        <!--TODO add an explanation for what this tool is, what it can do, options, etc-->
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1">
+                <div id="display_loading" class="align-content-center text-center bg-light"></div>
+                <div id="display_results" class="align-content-center text-center bg-light"></div>
+            </div>
+        </div>
 
-        <!--https://bootstrapformbuilder.com/-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <script src="./word-art.js" type="application/javascript"></script>
-
-        <form id="word_art_form">
-            <div class="form-group">
-                <label for="input_text">Text</label>
-                <textarea id="input_text" name="input_text" cols="40" rows="5" aria-describedby="input_textHelpBlock"
-                          required="required" class="form-control"></textarea>
-                <span id="input_textHelpBlock" class="form-text text-muted">Paste your text in here. It will be parsed and returned as an SVG file.</span>
-            </div>
-            <div class="form-group">
-                <label for="input_line_color">Line Color</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-align-justify"></i>
-                    </div>
-                    <input id="input_line_color" name="input_line_color" placeholder="#000" type="text"
-                           aria-describedby="input_line_colorHelpBlock" class="form-control here">
+        <div class="row">
+            <!--https://bootstrapformbuilder.com/-->
+            <form id="word_art_form">
+                <div class="form-group">
+                    <label for="input_text">Text
+                        <small class="text-muted"> Required</small>
+                    </label>
+                    <textarea id="input_text" name="input_text" cols="40" rows="5"
+                              aria-describedby="input_textHelpBlock"
+                              required="required" class="form-control"></textarea>
+                    <span id="input_textHelpBlock" class="form-text text-muted">
+                        Paste your text in here. It will be parsed and returned as an SVG file.
+                        Requires a minimum of two sentences.
+                        <br/>Hint: This works better with more text -
+                        try dropping an entire <a href="http://www.gutenberg.org/browse/scores/top" target="_blank">Project Gutenberg</a> novel in here :)
+                    </span>
                 </div>
-                <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hex color, including the # sign, here. This will be the primary color of the SVG path.</span>
-            </div>
-            <div class="form-group">
-                <label for="input_node_colors">Start and End Node Colors</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-align-justify"></i>
+                <div class="form-group">
+                    <label for="input_line_color">Line Color
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-align-justify"></i>
+                        </div>
+                        <input id="input_line_color" name="input_line_color" placeholder="#000" type="text"
+                               aria-describedby="input_line_colorHelpBlock" class="form-control here">
                     </div>
-                    <input id="input_node_colors" name="input_node_colors" placeholder="#CCC,#4A5E7F" type="text"
-                           aria-describedby="input_node_colorsHelpBlock" class="form-control here">
+                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the primary color of the SVG path.</span>
                 </div>
-                <span id="input_node_colorsHelpBlock"
-                      class="form-text text-muted">Two comma-separated hex colors.</span>
-            </div>
-            <div class="form-group">
-                <label for="input_split_words">Optional: Highlight Words</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-align-justify"></i>
+                <div class="form-group">
+                    <label for="input_node_colors">Start/End Point Colors
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-align-justify"></i>
+                        </div>
+                        <input id="input_node_colors" name="input_node_colors" placeholder="#CCC,#4A5E7F" type="text"
+                               aria-describedby="input_node_colorsHelpBlock" class="form-control here">
                     </div>
-                    <input id="input_split_words" name="input_split_words" placeholder="quality, logic, knowledge"
-                           type="text"
-                           aria-describedby="input_split_wordsHelpBlock" class="form-control here">
+                    <span id="input_node_colorsHelpBlock"
+                          class="form-text text-muted">Two comma-separated hexadecimal colors.</span>
                 </div>
-                <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence containing this word will receive a highlight of the color below.</span>
-            </div>
-            <div class="form-group">
-                <label for="input_split_color">Optional: Highlight Color</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-card-o"></i>
+                <div class="form-group">
+                    <label for="input_split_words">Highlight Words
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-align-justify"></i>
+                        </div>
+                        <input id="input_split_words" name="input_split_words" placeholder="quality, logic, knowledge"
+                               type="text"
+                               aria-describedby="input_split_wordsHelpBlock" class="form-control here">
                     </div>
-                    <input id="input_split_color" name="input_split_color" placeholder="#EC40FF" type="text"
-                           aria-describedby="input_split_colorHelpBlock" class="form-control here">
+                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the color below.</span>
                 </div>
-                <span id="input_split_colorHelpBlock" class="form-text text-muted">Input one hex color, including the # sign, here. This will be the primary color of the SVG path.</span>
-            </div>
-            <div class="form-group align-content-center">
-                <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
-            </div>
-        </form>
-
+                <div class="form-group">
+                    <label for="input_split_color">Highlight Color
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-address-card-o"></i>
+                        </div>
+                        <input id="input_split_color" name="input_split_color" placeholder="#EC40FF" type="text"
+                               aria-describedby="input_split_colorHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_split_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the color used to highlight sentences containing the words above.</span>
+                </div>
+                <div class="form-group justify-content-center text-center">
+                    <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
+                </div>
+            </form>
+        </div>
 
     </div>
 </div>
@@ -134,13 +153,12 @@
             href="mailto:davis.e.ford.alt+website@gmail.com">Email Me</a></small>
 </footer>
 
-<!-- Bootstrap -->
-<script async>
-  var cb=function(){var l=document.createElement('link');l.rel='stylesheet';l.href='/blog/public/css/bootstrap4.min.css';var h=document.getElementsByTagName('head')[0];h.parentNode.insertBefore(l,h)};var raf=requestAnimationFrame||mozRequestAnimationFrame||webkitRequestAnimationFrame||msRequestAnimationFrame;if(raf){raf(cb)}else{window.addEventListener('load',cb)}
-</script>
-<noscript>
-    <link rel="stylesheet" href="/blog/public/css/bootstrap4.min.css">
-</noscript>
+<link rel="stylesheet" href="https://daviseford.com/blog/public/css/bootstrap4.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="./word-art.js" type="application/javascript"></script>
+
 
 <!-- Icons (favicons are located in the root directory of the daviseford-website-code S3 bucket, not in this repo) -->
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=eE5za3Wkak">
@@ -153,10 +171,16 @@
 <meta name="application-name" content="daviseford">
 <meta name="theme-color" content="#ffffff">
 
-<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-55820654-2"></script>
 <script>
-  if(navigator.userAgent.indexOf("Speed Insights")===-1){(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-55820654-2','auto',{'siteSpeedSampleRate':80});ga('send','pageview')}
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-55820654-2');
 </script>
+
 
 
 </body>

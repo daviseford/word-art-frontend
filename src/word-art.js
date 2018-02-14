@@ -1,5 +1,33 @@
 $(document).ready(() => {
+  const endpoint = `https://gy2aa8c57c.execute-api.us-east-1.amazonaws.com/dev/`;
   const form = $('#word_art_form');
+  const results = $('#display_results');
+  const loading = $('#display_loading');
+
+  const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
+    'Incredible!!!', "That's tight -", 'Wicked sick!', 'My friend, you have astonished me.',
+    'Could it be? YES!', "Honestly, I'm impressed -", "Superlative!", "Can you believe it?",
+    'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -']
+  const getExpression = () => exclamations[Math.floor(Math.random() * exclamations.length)];
+
+  const start_load = () => {
+    form.hide();
+    results.hide();
+    loading.html(load()).show()
+  };
+
+  const end_load = () => {
+    loading.html('').hide();
+    results.show();
+    form.show();
+  };
+
+  const load = () => `<p class="lead text-info text-center">Now generating your SVG file...</p>`;
+  const success = (url) => {
+    return `<p class="lead text-success text-center">${getExpression()} Your SVG file has been generated</p>
+    <a href="${url}" target="_blank" role="button" class="btn btn-md btn-success">Download SVG</a>`
+  };
+  const error = (err) => `<p class="text-danger">There was an error generating your SVG file: ${err}</p>`;
 
   const getText = (txt) => {
     txt = txt.trim().replace(/[“”‘’]/g, '');
@@ -41,7 +69,7 @@ $(document).ready(() => {
       essential_opts['split'] = split
     }
 
-    const endpoint = `https://gy2aa8c57c.execute-api.us-east-1.amazonaws.com/dev/`;
+    start_load();
 
     $.ajax({
       url: endpoint,
@@ -53,10 +81,22 @@ $(document).ready(() => {
       },
       dataType: 'json',
     })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then(res => {
+          console.log(res);
+          if (res.s3_url) {
+            results.html(success(res.s3_url))
+          } else {
+            results.html(error(res.err))
+          }
+          end_load()
+        })
+        .catch(err => {
+          console.log(err);
+          results.html(error(res.err));
+          end_load()
+        })
 
-    // TODO now render, or display download link, or something
   })
+
 
 });
