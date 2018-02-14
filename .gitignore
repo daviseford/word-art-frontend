@@ -1,0 +1,9 @@
+_site
+.sass-cache
+.jekyll-metadata
+.idea
+.min.css
+.min.js
+dist/
+build_log.txt
+
