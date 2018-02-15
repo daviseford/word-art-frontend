@@ -54,16 +54,21 @@ $(document).ready(() => {
         .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
   };
 
+  const isHexCode = (code) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code)
   const getText = (txt) => {
     console.log('Text length before stripping: ' + txt.length);
     txt = stripText(txt).toLowerCase();
     console.log('Text length after stripping: ' + txt.length);
-    // TODO if txt.length > 300k, parse it on the frontend
-    console.log('Stripped text:', {txt});
     return txt;
   };
 
-  const getColor = (color) => color.trim().length > 0 ? color.trim() : null;
+  const getSimpleParse = (txt) => {
+    const sentences = txt.match(/[^\.!\?]+[\.!\?]+/g);
+    return sentences.map(x => x.split(' ').length)
+  };
+
+  /* TODO add hash if not there */
+  const getColor = (color) => color.trim().length > 0 && isHexCode(color.trim()) ? color.trim() : null;
 
   const getSplitText = (txt) => {
     if (txt.trim().length > 0) {
@@ -85,8 +90,10 @@ $(document).ready(() => {
       words: getSplitText(serialized[3].value),
       color: getColor(serialized[4].value)
     };
+    const simple_pre_parsed = getSimpleParse(text);
 
-    const standard_opts = {text, color, node_colors};
+
+    const standard_opts = {text, simple_pre_parsed, color, node_colors};
     const essential_opts = Object.keys(standard_opts).reduce((a, key) => {
       if (!standard_opts[key] || standard_opts[key] === '') return a;
       a[key] = standard_opts[key];
@@ -99,6 +106,7 @@ $(document).ready(() => {
     }
 
     start_load();
+    console.log(essential_opts)
 
     $.ajax({
       url: endpoint,
