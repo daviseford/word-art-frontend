@@ -1,13 +1,11 @@
-const Util = {}
+const Util = {};
 const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
   'Incredible!!!', "That's tight -", 'Wicked sick!', 'My friend, you have astonished me.',
   'Could it be? YES!', "Honestly, I'm impressed -", "Superlative!", "Can you believe it?",
-  'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -', 'Nerd - jk -'];
-Util.getExpression = () => exclamations[Math.floor(Math.random() * exclamations.length)];
-
+  'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -',];
 
 /**
- * Remove  commonProject Gutenberg watermarks
+ * Remove common Project Gutenberg watermarks
  * @param txt
  * @returns {string}
  */
@@ -46,8 +44,6 @@ Util.stripText = (txt) => {
       .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
       .replace(/\s+\./gm, ".")                  // removes the extra space in "end of sentence ."
       .replace(/\.\s+/gm, ".")                  // removes the extra space in ".  start of sentence"
-
-  // todo strip project gutenberg stuff
 };
 
 
@@ -80,7 +76,7 @@ Util.getSplitParse = (input_text, split_dict, primary_color) => {
   const default_color = primary_color || "#14B6D4";
 
   return sentences.map(words => {
-    let segment_color = default_color
+    let segment_color = default_color;
     split_dict['words'].forEach(word => {
       if (words.includes(word.toLowerCase())) {
         segment_color = split_dict['color'] || "#F22F00"
@@ -108,13 +104,16 @@ Util.removeEmptyKeys = (obj) => {
     a[key] = obj[key];
     return a
   }, {});
-}
+};
 
-Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
-Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x)) : null;
-Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
+/* Nifty one liners */
 Util.checksum = (txt) => txt.split('').reduce((a, s, i) => a + (txt.charCodeAt(i) * (i + 1)), 0x12345678).toString();
-Util.reduceObj = (obj) => JSON.stringify(obj).replace(/\s/g, '');
 Util.checksumObj = (obj) => Util.checksum(Util.reduceObj(obj));
+Util.getExpression = () => Util.getRandomEntry(exclamations);
+Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x)) : null;
+Util.getRandomEntry = (arr) => arr[Math.floor(Math.random() * arr.length)];
+Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
+Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
+Util.reduceObj = (obj) => JSON.stringify(obj).replace(/\s/g, '');
 
 module.exports = Util;
