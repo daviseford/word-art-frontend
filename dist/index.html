@@ -63,8 +63,9 @@
         <!--TODO add an explanation for what this tool is, what it can do, options, etc-->
         <div class="row">
             <div class="col-xs-8 offset-xs-2">
-                <div id="display_loading" class="align-content-center text-center bg-light"></div>
-                <div id="display_results" class="align-content-center text-center bg-light"></div>
+                <div id="display_loading" class="align-content-center text-center"></div>
+                <div id="display_long_load" class="align-content-center text-center"></div>
+                <div id="display_results" class="align-content-center text-center"></div>
             </div>
         </div>
 
@@ -99,7 +100,7 @@
                         <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
                                aria-describedby="input_line_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the primary primary_color of the SVG path.</span>
+                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the primary color of the SVG path.</span>
                 </div>
                 <div class="form-group">
                     <label for="input_node_colors">Start/End Point Colors
@@ -127,7 +128,7 @@
                                type="text"
                                aria-describedby="input_split_wordsHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the primary_color below.</span>
+                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the color below.</span>
                 </div>
                 <div class="form-group">
                     <label for="input_split_color">Highlight Color
@@ -164,11 +165,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=eE5za3Wkak">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=eE5za3Wkak">
 <link rel="manifest" href="/manifest.json?v=eE5za3Wkak">
-<link rel="mask-icon" href="/safari-pinned-tab.svg?v=eE5za3Wkak" primary_color="#44bde3">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=eE5za3Wkak" color="#44bde3">
 <link rel="shortcut icon" href="/favicon.ico?v=eE5za3Wkak">
 <meta name="apple-mobile-web-app-title" content="daviseford">
 <meta name="application-name" content="daviseford">
-<meta name="theme-primary_color" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-55820654-2"></script>
