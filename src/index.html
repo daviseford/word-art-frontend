@@ -96,10 +96,10 @@
                         <div class="input-group-addon">
                             <i class="fa fa-align-justify"></i>
                         </div>
-                        <input id="input_line_color" name="input_line_color" placeholder="#000" type="text"
+                        <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
                                aria-describedby="input_line_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the primary color of the SVG path.</span>
+                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal primary_color, including the # sign, here. This will be the primary primary_color of the SVG path.</span>
                 </div>
                 <div class="form-group">
                     <label for="input_node_colors">Start/End Point Colors
@@ -109,11 +109,11 @@
                         <div class="input-group-addon">
                             <i class="fa fa-align-justify"></i>
                         </div>
-                        <input id="input_node_colors" name="input_node_colors" placeholder="#CCC,#4A5E7F" type="text"
+                        <input id="input_node_colors" name="input_node_colors" placeholder="#F26101,#4A5E7F" type="text"
                                aria-describedby="input_node_colorsHelpBlock" class="form-control here">
                     </div>
                     <span id="input_node_colorsHelpBlock"
-                          class="form-text text-muted">Two comma-separated hexadecimal colors.</span>
+                          class="form-text text-muted">Two comma-separated hexadecimal colors. <small>If this is left empty, the start and end points will not be labelled.</small></span>
                 </div>
                 <div class="form-group">
                     <label for="input_split_words">Highlight Words
@@ -127,7 +127,7 @@
                                type="text"
                                aria-describedby="input_split_wordsHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the color below.</span>
+                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the primary_color below.</span>
                 </div>
                 <div class="form-group">
                     <label for="input_split_color">Highlight Color
@@ -137,10 +137,10 @@
                         <div class="input-group-addon">
                             <i class="fa fa-address-card-o"></i>
                         </div>
-                        <input id="input_split_color" name="input_split_color" placeholder="#EC40FF" type="text"
+                        <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text"
                                aria-describedby="input_split_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the color used to highlight sentences containing the words above.</span>
+                    <span id="input_split_colorHelpBlock" class="form-text text-muted">Input one hexadecimal primary_color, including the # sign, here. This will be the primary_color used to highlight sentences containing the words above.</span>
                 </div>
                 <div class="form-group justify-content-center text-center">
                     <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
@@ -168,11 +168,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=eE5za3Wkak">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=eE5za3Wkak">
 <link rel="manifest" href="/manifest.json?v=eE5za3Wkak">
-<link rel="mask-icon" href="/safari-pinned-tab.svg?v=eE5za3Wkak" color="#44bde3">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=eE5za3Wkak" primary_color="#44bde3">
 <link rel="shortcut icon" href="/favicon.ico?v=eE5za3Wkak">
 <meta name="apple-mobile-web-app-title" content="daviseford">
 <meta name="application-name" content="daviseford">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-primary_color" content="#ffffff">
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-55820654-2"></script>

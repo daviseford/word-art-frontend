@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  const version = 1;
   const endpoint = `https://gy2aa8c57c.execute-api.us-east-1.amazonaws.com/dev/`;
   const form = $('#word_art_form');
   const results = $('#display_results');
@@ -54,10 +55,10 @@ $(document).ready(() => {
         .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
   };
 
-  const isHexCode = (code) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code)
+
   const getText = (txt) => {
     console.log('Text length before stripping: ' + txt.length);
-    txt = stripText(txt).toLowerCase();
+    txt = stripText(txt).trim().toLowerCase();
     console.log('Text length after stripping: ' + txt.length);
     return txt;
   };
@@ -67,15 +68,49 @@ $(document).ready(() => {
     return sentences.map(x => x.split(' ').length)
   };
 
-  /* TODO add hash if not there */
-  const getColor = (color) => color.trim().length > 0 && isHexCode(color.trim()) ? color.trim() : null;
-
-  const getSplitText = (txt) => {
-    if (txt.trim().length > 0) {
-      return txt.split(',').map(x => x.trim().toLowerCase())
-    }
-    return null;
+  const getSimplePathStr = (array_of_ints) => {
+    /* Turn left 90 degrees each time */
+    const behavior_ref = ['h -', 'v ', 'h ', 'v -'];
+    let count = 0;
+    return array_of_ints.reduce((a, i) => {
+      const move = `${behavior_ref[count]}${i}`;
+      count = count === 3 ? 0 : count + 1;
+      return `${a} ${move}`;
+    }, 'M50 20j')
   };
+
+
+  const getSplitParse = (input_text, split_dict, primary_color) => {
+    const sentences = input_text.match(/[^\.!\?]+[\.!\?]+/g);
+    const default_color = primary_color || "#14B6D4";
+
+    return sentences.map(words => {
+      let segment_color = default_color
+      split_dict['words'].forEach(word => {
+        if (words.includes(word.toLowerCase())) {
+          segment_color = split_dict['color'] || "#F22F00"
+        }
+      });
+      return {'color': segment_color, 'length': words.split(' ').length}
+    })
+  };
+
+  /**
+   *
+   * @param txt
+   * @returns {string|null}
+   */
+  const toHex = (txt) => {
+    txt = txt ? txt.trim() : '';
+    if (txt.includes('#') && isHexCode(txt)) return txt;
+    return isHexCode(`#${txt}`) ? `#${txt}` : null;
+  };
+
+
+  const getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
+  const getNodeColors = (txt) => txt ? txt.split(',').map(x => toHex(x)) : null;
+  const isHexCode = (code) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
+  const checksum = (txt) => txt.split('').reduce((a, s, i) => a + (txt.charCodeAt(i) * (i + 1)), 0x12345678).toString();
 
   form.submit((e) => {
     e.stopPropagation();
@@ -84,16 +119,27 @@ $(document).ready(() => {
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
     const serialized = form.serializeArray();
     const text = getText(serialized[0].value);
-    const color = getColor(serialized[1].value);
-    const node_colors = getSplitText(serialized[2].value);
+    const color = toHex(serialized[1].value);
+    const node_colors = getNodeColors(serialized[2].value);
     const split = {
       words: getSplitText(serialized[3].value),
-      color: getColor(serialized[4].value)
+      color: toHex(serialized[4].value)
     };
     const simple_pre_parsed = getSimpleParse(text);
+    const simple_path = getSimplePathStr(simple_pre_parsed);
+    const split_pre_parsed = split.words ? getSplitParse(text, split, color) : null;
 
+    // console.log(simple_path)
+    console.log(split_pre_parsed)
 
-    const standard_opts = {text, simple_pre_parsed, color, node_colors};
+    const standard_opts = {
+      text,
+      simple_path,
+      split_pre_parsed,
+      color,
+      node_colors,
+      version
+    };
     const essential_opts = Object.keys(standard_opts).reduce((a, key) => {
       if (!standard_opts[key] || standard_opts[key] === '') return a;
       a[key] = standard_opts[key];
@@ -101,11 +147,17 @@ $(document).ready(() => {
     }, {});
 
     /* Check if split needs to be included */
-    if (split.words && split.color) {
+    if (split.words) {
       essential_opts['split'] = split
     }
 
+    if ((simple_path.length > 0 && !essential_opts['split']) || split_pre_parsed.length > 0) {
+      delete essential_opts['text']
+    }
+
     start_load();
+    essential_opts.checksum = checksum(JSON.stringify(essential_opts));
+    console.log(essential_opts.checksum)
     console.log(essential_opts)
 
     $.ajax({
