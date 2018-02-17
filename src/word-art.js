@@ -46,10 +46,11 @@ $(document).ready(() => {
     const serialized = form.serializeArray();
     const text = Util.getText(serialized[0].value);
     const color = Util.toHex(serialized[1].value);
-    const node_colors = Util.getNodeColors(serialized[2].value);
+    const bg_color = Util.toHex(serialized[2].value);
+    const node_colors = Util.getNodeColors(serialized[3].value);
     const split = {
-      words: Util.getSplitText(serialized[3].value),
-      color: Util.toHex(serialized[4].value)
+      words: Util.getSplitText(serialized[4].value),
+      color: Util.toHex(serialized[5].value)
     };
     // console.log(text)
     const simple_pre_parsed = Util.getSimpleParse(text);
@@ -63,7 +64,8 @@ $(document).ready(() => {
       split_pre_parsed,
       color,
       node_colors,
-      version
+      version,
+      bg_color,
     };
 
     /* Remove empty fields (they'll get default values on the back end if needed) */
@@ -81,6 +83,8 @@ $(document).ready(() => {
 
     start_load();
     essential_opts.checksum = Util.checksumObj(essential_opts);
+
+    console.log(essential_opts)
 
     $.ajax({
       url: endpoint,
