@@ -3,4 +3,4 @@ _site
 .idea
 _dist/
 build_log.txt
-
+node_modules/
