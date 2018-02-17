@@ -51,12 +51,11 @@ $(document).ready(() => {
       words: Util.getSplitText(serialized[3].value),
       color: Util.toHex(serialized[4].value)
     };
+    // console.log(text)
     const simple_pre_parsed = Util.getSimpleParse(text);
     const simple_path = Util.getSimplePathStr(simple_pre_parsed);
     const split_pre_parsed = split.words ? Util.getSplitParse(text, split, color) : null;
 
-    // console.log(simple_path)
-    // console.log(split_pre_parsed)
 
     const standard_opts = {
       text,
@@ -68,11 +67,7 @@ $(document).ready(() => {
     };
 
     /* Remove empty fields (they'll get default values on the back end if needed) */
-    const essential_opts = Object.keys(standard_opts).reduce((a, key) => {
-      if (!standard_opts[key] || standard_opts[key] === '') return a;
-      a[key] = standard_opts[key];
-      return a
-    }, {});
+    const essential_opts = Util.removeEmptyKeys(standard_opts);
 
     /* Check if split needs to be included */
     if (split.words) {
@@ -86,7 +81,6 @@ $(document).ready(() => {
 
     start_load();
     essential_opts.checksum = Util.checksumObj(essential_opts);
-    // console.log(essential_opts)
 
     $.ajax({
       url: endpoint,

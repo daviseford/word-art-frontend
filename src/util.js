@@ -5,27 +5,48 @@ const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
   'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -', 'Nerd - jk -'];
 Util.getExpression = () => exclamations[Math.floor(Math.random() * exclamations.length)];
 
+
+/**
+ * Remove  commonProject Gutenberg watermarks
+ * @param txt
+ * @returns {string}
+ */
+Util.gutenberg = (txt) => {
+  const start_delim = '*** START OF THIS PROJECT GUTENBERG EBOOK';
+  const end_delim = '*** END OF THIS PROJECT GUTENBERG EBOOK';
+  // Remove everything before and including start_delim
+  if (txt.includes(end_delim)) {
+    txt = txt.split(end_delim)[0]
+  }
+  if (txt.includes(start_delim)) {
+    txt = txt.replace(/[.\s\w-:,\[\]\#]+\*{3}/gm, ' ');
+  }
+  return txt
+};
+
 /**
  * Removes unnecessary characters from a string
  * @param txt
  * @returns {string}
  */
 Util.stripText = (txt) => {
-  return txt
-      .replace(/[‘’\u2018\u2019\u201A]/gm, "'") // smart single quotes and apostrophe
-      .replace(/[“”\u201C\u201D\u201E]/gm, '"') // smart double quotes
-      .replace(/\u2026/gm, "...")               // ellipsis
-      .replace(/\u02C6/gm, "^")                 // circumflex
-      .replace(/\u2039/gm, "<")                 // open angle bracket
-      .replace(/\u203A/gm, ">")                 // close angle bracket
+  return Util.gutenberg(txt)
+      .trim()
+      .toLowerCase()
+      .replace(/[‘’\u2018\u2019\u201A\']/gm, " ") // single quotes
+      .replace(/[“”\u201C\u201D\u201E\"]/gm, ' ') // double quotes
+      .replace(/\u2026/gm, ".")                 // special ellipsis
+      .replace(/\u02C6/gm, " ")                 // circumflex
+      .replace(/[\u2039<\u203A>]/gm, " ")       // angle brackets
       .replace(/[\u02DC\u00A0]/gm, " ")         // spaces
       .replace(/\d+:\d+/gm, " ")                // bible verses, lol, i.e. 31:12
-      .replace(/[\u2013\u2014,:;\-\+]/gm, " ")  // unnecessary punctuation
+      .replace(/[\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, " ")  // unnecessary punctuation
       .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
       .replace(/(\r\n|\n|\r)/gm, " ")           // strip newlines
       .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
-      .trim()
-      .toLowerCase()
+      .replace(/\s+\./gm, ".")                  // removes the extra space in "end of sentence ."
+      .replace(/\.\s+/gm, ".")                  // removes the extra space in ".  start of sentence"
+
   // todo strip project gutenberg stuff
 };
 
@@ -81,6 +102,13 @@ Util.toHex = (txt) => {
   return Util.isHexCode(`#${txt}`) ? `#${txt}` : null;
 };
 
+Util.removeEmptyKeys = (obj) => {
+  return Object.keys(obj).reduce((a, key) => {
+    if (!obj[key] || obj[key] === '') return a;
+    a[key] = obj[key];
+    return a
+  }, {});
+}
 
 Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
 Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x)) : null;
