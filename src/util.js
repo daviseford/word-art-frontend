@@ -110,7 +110,7 @@ Util.removeEmptyKeys = (obj) => {
 Util.checksum = (txt) => txt.split('').reduce((a, s, i) => a + (txt.charCodeAt(i) * (i + 1)), 0x12345678).toString();
 Util.checksumObj = (obj) => Util.checksum(Util.reduceObj(obj));
 Util.getExpression = () => Util.getRandomEntry(exclamations);
-Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x)) : null;
+Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x) ? Util.toHex(x) : '#F26101') : null;
 Util.getRandomEntry = (arr) => arr[Math.floor(Math.random() * arr.length)];
 Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
 Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
