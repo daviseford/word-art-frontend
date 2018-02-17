@@ -24,14 +24,17 @@ Util.stripText = (txt) => {
       .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
       .replace(/(\r\n|\n|\r)/gm, " ")           // strip newlines
       .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
+      .trim()
+      .toLowerCase()
+  // todo strip project gutenberg stuff
 };
 
 
 Util.getText = (txt) => {
   console.log('Text length before stripping: ' + txt.length);
-  txt = Util.stripText(txt).trim().toLowerCase();
+  txt = Util.stripText(txt);
   console.log('Text length after stripping: ' + txt.length);
-  return txt;
+  return txt.split('.').length >= 2 ? txt : 'too. short.';
 };
 
 Util.getSimpleParse = (txt) => {
@@ -67,7 +70,8 @@ Util.getSplitParse = (input_text, split_dict, primary_color) => {
 };
 
 /**
- *
+ * Checks if a string is a valid hex code.
+ * Also tries inserting a '#' sign if one doesn't exist
  * @param txt
  * @returns {string|null}
  */
@@ -80,8 +84,9 @@ Util.toHex = (txt) => {
 
 Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
 Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x)) : null;
-Util.isHexCode = (code) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
+Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
 Util.checksum = (txt) => txt.split('').reduce((a, s, i) => a + (txt.charCodeAt(i) * (i + 1)), 0x12345678).toString();
 Util.reduceObj = (obj) => JSON.stringify(obj).replace(/\s/g, '');
+Util.checksumObj = (obj) => Util.checksum(Util.reduceObj(obj));
 
-module.exports = Util
+module.exports = Util;

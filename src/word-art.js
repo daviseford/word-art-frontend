@@ -21,8 +21,9 @@ $(document).ready(() => {
   };
 
   const long_load_screen = (url) => {
-    return `<p class="text-info">Your SVG file is taking a while to generate.<br/>
-    It will eventually be uploaded to this url: <a href="${url}"><strong>${url}</strong></a> 
+    return `<p class="text-info text-center">Your SVG file is taking a while to generate.<br/>
+    It will eventually be uploaded here.<br />
+    <a href="${url}" class="mt-2 mb-2"><small><strong>${url}</strong></small></a> 
     <br/>Try clicking this link in a minute or two :)</p>`;
   };
   const load = () => `<p class="lead text-info text-center">Now generating your SVG file...</p>`;
@@ -55,7 +56,7 @@ $(document).ready(() => {
     const split_pre_parsed = split.words ? Util.getSplitParse(text, split, color) : null;
 
     // console.log(simple_path)
-    console.log(split_pre_parsed)
+    // console.log(split_pre_parsed)
 
     const standard_opts = {
       text,
@@ -65,6 +66,8 @@ $(document).ready(() => {
       node_colors,
       version
     };
+
+    /* Remove empty fields (they'll get default values on the back end if needed) */
     const essential_opts = Object.keys(standard_opts).reduce((a, key) => {
       if (!standard_opts[key] || standard_opts[key] === '') return a;
       a[key] = standard_opts[key];
@@ -76,13 +79,14 @@ $(document).ready(() => {
       essential_opts['split'] = split
     }
 
+    /* Reduce the size of the network request by removing the text */
     if ((simple_path.length > 0 && !essential_opts['split']) || split_pre_parsed.length > 0) {
       delete essential_opts['text']
     }
 
     start_load();
-    essential_opts.checksum = Util.checksum(Util.reduceObj(essential_opts));
-    console.log(essential_opts)
+    essential_opts.checksum = Util.checksumObj(essential_opts);
+    // console.log(essential_opts)
 
     $.ajax({
       url: endpoint,
@@ -105,7 +109,7 @@ $(document).ready(() => {
         })
         .catch(err => {
           if (err.statusText === 'error') {
-            const expected_url = `https://s3.amazonaws.com/word-art-svgs/${essential_opts.checksum}.svg`
+            const expected_url = `https://s3.amazonaws.com/word-art-svgs/${essential_opts.checksum}.svg`;
             // TODO get that working
             // LongLoad.wait(expected_url).then(res=>console.log(res))
             results.html(long_load_screen(expected_url));
