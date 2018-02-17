@@ -2,28 +2,26 @@ const Util = require('./util');
 // const LongLoad = require('./long_load')
 
 $(document).ready(() => {
-  const version = 1;
+  const version = 1;  // update this to invalidate all previous checksums
   const endpoint = `https://gy2aa8c57c.execute-api.us-east-1.amazonaws.com/dev/`;
   const form = $('#word_art_form');
   const results = $('#display_results');
   const loading = $('#display_loading');
-  const long_load = $('#display_long_load');
 
   const start_load = () => {
-    form.hide();
-    results.hide();
-    loading.html(load()).show()
+    form.hide(5);
+    results.hide(5);
+    loading.html(load()).show(5)
   };
 
   const end_load = () => {
-    loading.html(null).hide();
-    long_load.html(null).hide()
-    results.show();
-    form.show();
+    loading.html(null).hide(5);
+    results.show(5);
+    form.show(5);
   };
 
   const long_load_screen = (url) => {
-    return `<p class="text-danger">Your SVG file is taking a while to generate.<br/>
+    return `<p class="text-info">Your SVG file is taking a while to generate.<br/>
     It will eventually be uploaded to this url: <a href="${url}"><strong>${url}</strong></a> 
     <br/>Try clicking this link in a minute or two :)</p>`;
   };
