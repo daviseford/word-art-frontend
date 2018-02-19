@@ -4,6 +4,13 @@ const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
   'Could it be? YES!', "Honestly, I'm impressed -", "Superlative!", "Can you believe it?",
   'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -',];
 
+Util.whatsapp = (txt) => {
+  // regex to remove timestamp + username: ^\[[\S]+[\s][\S]+[\s]\wM\]\s[\w\s]+:\s
+  // need to also remove <image omitted> and <audio omitted>
+  // emojis?
+  // also need to add a period to the end of each line: find ($), replace $1\.
+}
+
 /**
  * Remove common Project Gutenberg watermarks
  * @param txt
@@ -46,11 +53,8 @@ Util.stripText = (txt) => {
       .replace(/\.\s+/gm, ".")                  // removes the extra space in ".  start of sentence"
 };
 
-
 Util.getText = (txt) => {
-  console.log('Text length before stripping: ' + txt.length);
   txt = Util.stripText(txt);
-  console.log('Text length after stripping: ' + txt.length);
   return txt.split('.').length >= 2 ? txt : 'too. short.';
 };
 

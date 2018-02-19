@@ -1,6 +1,8 @@
 const Util = require('./util');
 // const LongLoad = require('./long_load')
 
+// todo https://developers.canvaspop.com/documentation/examples-web
+
 $(document).ready(() => {
   const version = 1;  // update this to invalidate all previous checksums
   const endpoint = `https://gy2aa8c57c.execute-api.us-east-1.amazonaws.com/dev/`;

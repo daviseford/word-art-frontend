@@ -9,7 +9,7 @@ module.exports = {
     app: './src/word-art.js'
   },
   output: {
-    filename: '[name].[chunkhash].js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {

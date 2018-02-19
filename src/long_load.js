@@ -12,7 +12,7 @@ LongLoad.exists = (url) => {
 LongLoad.wait = (url) => {
   try {
     console.log('in here now')
-    LongLoad.exists(url).then(res=>res).catch(e=>e)
+    LongLoad.exists(url).then(res => res).catch(e => e)
   } catch (e) {
     console.log(e)
     return e
