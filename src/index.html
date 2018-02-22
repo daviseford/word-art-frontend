@@ -78,7 +78,6 @@
                               required="required" class="form-control"></textarea>
                     <span id="input_textHelpBlock" class="form-text text-muted">
                         Paste your text in here. It will be parsed and returned as an SVG file.
-                        Requires a minimum of two sentences.
                         <br/>
                         <small>Hint: This works better with more text -
                             try dropping an entire
@@ -97,7 +96,7 @@
                         <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
                                aria-describedby="input_line_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here.<br /><small>This will be the primary color of the SVG path.</small></span>
+                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here.<br/><small>This will be the primary color of the SVG path.</small></span>
                 </div>
                 <div class="form-group">
                     <label for="input_line_bg_color">Background Color
@@ -140,7 +139,10 @@
                                type="text"
                                aria-describedby="input_split_wordsHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">Comma-separated words that you'd like highlighted. Any sentence in your text that contains this word will receive a highlight of the color below.</span>
+                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">
+                        Comma-separated words that you'd like highlighted.<br/>
+                        <small>Any sentence in your text that contains this word will receive a highlight of the color below.</small>
+                    </span>
                 </div>
                 <div class="form-group">
                     <label for="input_split_color">Highlight Color
@@ -153,7 +155,10 @@
                         <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text"
                                aria-describedby="input_split_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here. This will be the color used to highlight sentences containing the words above.</span>
+                    <span id="input_split_colorHelpBlock" class="form-text text-muted">
+                        Input one hexadecimal color, including the # sign, here.<br/>
+                        <small>This will be the color used to highlight sentences containing the words above.</small>
+                    </span>
                 </div>
                 <div class="form-group justify-content-center text-center">
                     <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
@@ -165,7 +170,7 @@
 </div>
 
 <footer class="text-center">
-    <small>&copy; 2018. All rights reserved. v3.0.1. <a
+    <small>&copy; 2018. All rights reserved.<a
             href="mailto:davis.e.ford.alt+website@gmail.com">Email Me</a></small>
 </footer>
 

@@ -119,5 +119,8 @@ Util.getRandomEntry = (arr) => arr[Math.floor(Math.random() * arr.length)];
 Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
 Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
 Util.reduceObj = (obj) => JSON.stringify(obj).replace(/\s/g, '');
+Util.extensionSVGtoPNG = (filename) => filename.replace(/.svg/g, '.png');
+Util.extensionPNGtoSVG = (filename) => filename.replace(/.png/g, '.svg');
+Util.getFileName = (url) => url.substring(url.lastIndexOf('/') + 1);
 
 module.exports = Util;
