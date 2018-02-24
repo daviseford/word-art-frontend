@@ -10,18 +10,18 @@ $(document).ready(() => {
   const svg_bucket = `https://s3.amazonaws.com/word-art-svgs/`;
   const png_bucket = `https://s3.amazonaws.com/word-art-pngs/`;
   const form = $('#word_art_form');
-  const results = $('#display_results');
-  const loading = $('#display_loading');
+  const results_div = $('#display_results');
+  const loading_div = $('#display_loading');
 
   const start_load = () => {
     form.hide(1);
-    results.hide(1);
-    loading.html(load()).show(1)
+    results_div.hide(1);
+    loading_div.html(load()).show(1)
   };
 
   const end_load = () => {
-    loading.html(null).hide(1);
-    results.show(1);
+    loading_div.html(null).hide(1);
+    results_div.show(1);
     form.show(1);
   };
 
@@ -40,12 +40,24 @@ $(document).ready(() => {
   };
 
   const png_success = (svg_url) => {
-    console.log(svg_url);
     const png_filename = Util.extensionSVGtoPNG(Util.getFileName(svg_url));
     const png_url = `${png_bucket}${png_filename}`;
-    return `<p class="lead text-success text-center">${Util.getExpression()} Your files are ready!</p>
-    <a href="${svg_url}" target="_blank" role="button" class="btn btn-md btn-success">Download SVG</a>
-    ${png_download(png_url)}`
+    return `
+    <p class="lead text-success text-center">${Util.getExpression()} Your files are ready!</p>
+    <div class="row">
+        <div class="col pb-2"> 
+            <div class="btn-group" role="group">
+                <a href="${svg_url}" target="_blank" role="button" class="btn btn-md btn-success">Download SVG</a>
+                ${png_download(png_url)}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col pb-2">
+            ${canvaspop_button(png_url)}
+        </div>
+    </div>
+    `
   };
 
   const error = (err) => {
@@ -61,10 +73,20 @@ $(document).ready(() => {
   };
 
   const png_download = (png_url) => {
-    return `<a href="${png_url}" target="_blank" role="button" id="png_loading_btn" class="btn btn-md btn-primary">
+    return `<a href="${png_url}" target="_blank" role="button" id="png_download_btn" class="btn btn-md btn-primary">
     Download PNG
     </a>`
   };
+
+  const canvaspop_button = (png_url) => {
+    return `<a href="${get_canvaspop_url(png_url)}" target="_blank" role="button" id="canvaspop_store_btn" class="btn btn-md btn-dark">
+    Buy Now on CanvasPop
+    </a>`
+  };
+
+  const get_canvaspop_url = (url) => {
+    return `https://store.canvaspop.com/api/pull?image_url=${url}&access_key=15549806e27b7565977dabf10b992dbd`
+  }
 
   const get_opts = () => {
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
@@ -130,23 +152,23 @@ $(document).ready(() => {
     }).then(res => {
       console.log(res);
       if (res.s3_url) {
-        results.html(svg_success(res.s3_url));
+        results_div.html(svg_success(res.s3_url));
         if (!res.duplicate) {
           generatePNG(res.s3_url, essential_opts.bg_color)
         } else {
-          results.html(png_success(res.s3_url))
+          results_div.html(png_success(res.s3_url))
         }
       } else {
-        results.html(error(res.err))
+        results_div.html(error(res.err))
       }
       end_load()
     }).catch(err => {
       if (err.statusText === 'error') {
         const expected_url = `${svg_bucket}${essential_opts.checksum}.svg`;
-        results.html(long_load_screen(expected_url));
+        results_div.html(long_load_screen(expected_url));
       } else {
         console.log('Error', err);
-        results.html(error(err.statusText));
+        results_div.html(error(err.statusText));
       }
       end_load()
     })
@@ -165,7 +187,7 @@ $(document).ready(() => {
       dataType: 'json',
     }).then(res => {
       console.log(res);
-      results.html(png_success(res.svg_url))
+      results_div.html(png_success(res.svg_url))
     }).catch(err => console.log(err))
   }
 
