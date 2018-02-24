@@ -1,7 +1,5 @@
 const Util = require('./util');
-// const LongLoad = require('./long_load')
-
-// todo https://developers.canvaspop.com/documentation/examples-web
+const Form = require('./form');
 
 $(document).ready(() => {
   const version = 2;  // update this to invalidate all previous checksums
@@ -14,15 +12,15 @@ $(document).ready(() => {
   const loading_div = $('#display_loading');
 
   const start_load = () => {
-    form.hide(1);
-    results_div.hide(1);
-    loading_div.html(load()).show(1)
+    form.hide(0);
+    results_div.hide(0);
+    loading_div.html(load()).show(0)
   };
 
   const end_load = () => {
-    loading_div.html(null).hide(1);
-    results_div.show(1);
-    form.show(1);
+    loading_div.html(null).hide(0);
+    results_div.show(0);
+    form.show(0);
   };
 
   const long_load_screen = (url) => {
@@ -31,7 +29,12 @@ $(document).ready(() => {
     <a href="${url}" class="mt-2 mb-2"><small><strong>${url}</strong></small></a> 
     <br/>Try clicking this link in a minute or two :)</p>`;
   };
-  const load = () => `<p class="lead text-info text-center">Now generating your SVG file...</p>`;
+  const load = () => {
+    return `<div class="col-12 py-5 my-5 text-center">
+    <p class="lead text-info text-center">Now generating your SVG file...</p>
+    <i id="loading-icon" class="fa fa-life-ring fa-spin text-info" style="font-size: 24px;"></i>
+    </div>`;
+  }
 
   const svg_success = (svg_url) => {
     return `<p class="lead text-success text-center">Your SVG file has been generated</p>
@@ -86,55 +89,15 @@ $(document).ready(() => {
 
   const get_canvaspop_url = (url) => {
     return `https://store.canvaspop.com/api/pull?image_url=${url}&access_key=15549806e27b7565977dabf10b992dbd`
-  }
-
-  const get_opts = () => {
-    // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
-    const serialized = form.serializeArray();
-    const text = Util.getText(serialized[0].value);
-    const color = Util.toHex(serialized[1].value);
-    const bg_color = Util.toHex(serialized[2].value);
-    const node_colors = Util.getNodeColors(serialized[3].value);
-    const split = {
-      words: Util.getSplitText(serialized[4].value),
-      color: Util.toHex(serialized[5].value)
-    };
-    // console.log(text)
-    const simple_pre_parsed = Util.getSimpleParse(text);
-    const simple_path = Util.getSimplePathStr(simple_pre_parsed);
-    const split_pre_parsed = split.words ? Util.getSplitParse(text, split, color) : null;
-
-    const standard_opts = {
-      text,
-      simple_path,
-      split_pre_parsed,
-      color,
-      node_colors,
-      version,
-      bg_color,
-    };
-
-    /* Remove empty fields (they'll get default values on the back end if needed) */
-    const essential_opts = Util.removeEmptyKeys(standard_opts);
-
-    /* Check if split needs to be included */
-    if (split.words) {
-      essential_opts['split'] = split
-    }
-
-    /* Reduce the size of the network request by removing the text */
-    if ((simple_path.length > 0 && !essential_opts['split']) || split_pre_parsed.length > 0) {
-      delete essential_opts['text']
-    }
-    return essential_opts
   };
+
 
   form.submit((e) => {
     e.stopPropagation();
     e.preventDefault();
 
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
-    const essential_opts = get_opts();
+    const essential_opts = Form.get_opts(version);
     start_load();
     essential_opts.checksum = Util.checksumObj(essential_opts);
 
@@ -142,12 +105,8 @@ $(document).ready(() => {
 
     $.ajax({
       url: generate_svg_endpoint,
-      method: 'post',
-      data: JSON.stringify(essential_opts),
-      processData: false,
-      headers: {
-        'Accept': 'application/json'
-      },
+      method: 'post', data: JSON.stringify(essential_opts),
+      processData: false, headers: {'Accept': 'application/json'},
       dataType: 'json',
     }).then(res => {
       console.log(res);
