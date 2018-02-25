@@ -4,12 +4,12 @@ const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
   'Could it be? YES!', "Honestly, I'm impressed -", "Superlative!", "Can you believe it?",
   'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -',];
 
-Util.whatsapp = (txt) => {
-  // regex to remove timestamp + username: ^\[[\S]+[\s][\S]+[\s]\wM\]\s[\w\s]+:\s
-  // need to also remove <image omitted> and <audio omitted>
-  // emojis?
-  // also need to add a period to the end of each line: find ($), replace $1\.
-}
+// Util.whatsapp = (txt) => {
+// regex to remove timestamp + username: ^\[[\S]+[\s][\S]+[\s]\wM\]\s[\w\s]+:\s
+// need to also remove <image omitted> and <audio omitted>
+// emojis?
+// also need to add a period to the end of each line: find ($), replace $1\.
+// }
 
 /**
  * Remove common Project Gutenberg watermarks
@@ -24,7 +24,7 @@ Util.gutenberg = (txt) => {
     txt = txt.split(end_delim)[0]
   }
   if (txt.includes(start_delim)) {
-    txt = txt.replace(/[.\s\w-:,\[\]\#]+\*{3}/gm, ' ');
+    txt = txt.replace(/[.\s\w-:,\[\]\#\S]+\*{3}/gm, ' ');
   }
   return txt
 };
@@ -45,6 +45,7 @@ Util.stripText = (txt) => {
       .replace(/[\u2039<\u203A>]/gm, " ")       // angle brackets
       .replace(/[\u02DC\u00A0]/gm, " ")         // spaces
       .replace(/\d+:\d+/gm, " ")                // bible verses, lol, i.e. 31:12
+      .replace(/(\d+),(\d+)/gm, (m, p1, p2) => p1 + p2)   // convert 1,234 -> 1234
       .replace(/[\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, " ")  // unnecessary punctuation
       .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
       .replace(/(\r\n|\n|\r)/gm, " ")           // strip newlines
@@ -55,7 +56,7 @@ Util.stripText = (txt) => {
 
 Util.getText = (txt) => {
   txt = Util.stripText(txt);
-  return txt.split('.').length >= 2 ? txt : 'too. short.';
+  return txt.split('.').length >= 2 ? txt : 'too.short.';
 };
 
 Util.getSimpleParse = (txt) => {
@@ -97,7 +98,7 @@ Util.getSplitParse = (input_text, split_dict, primary_color) => {
  * @returns {string|null}
  */
 Util.toHex = (txt) => {
-  txt = txt ? txt.trim() : '';
+  txt = txt ? txt.trim().toUpperCase() : '';
   if (txt.includes('#') && Util.isHexCode(txt)) return txt;
   return Util.isHexCode(`#${txt}`) ? `#${txt}` : null;
 };
@@ -111,16 +112,22 @@ Util.removeEmptyKeys = (obj) => {
 };
 
 /* Nifty one liners */
-Util.checksum = (txt) => txt.split('').reduce((a, s, i) => a + (txt.charCodeAt(i) * (i + 1)), 0x12345678).toString();
-Util.checksumObj = (obj) => Util.checksum(Util.reduceObj(obj));
 Util.getExpression = () => Util.getRandomEntry(exclamations);
 Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x) ? Util.toHex(x) : '#F26101') : null;
 Util.getRandomEntry = (arr) => arr[Math.floor(Math.random() * arr.length)];
 Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
 Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
-Util.reduceObj = (obj) => JSON.stringify(obj).replace(/\s/g, '');
 Util.extensionSVGtoPNG = (filename) => filename.replace(/.svg/g, '.png');
 Util.extensionPNGtoSVG = (filename) => filename.replace(/.png/g, '.svg');
 Util.getFileName = (url) => url.substring(url.lastIndexOf('/') + 1);
+
+Util.checksum = (any) => {
+  if (!any) return null;
+  if (typeof any === 'string') {
+    return any.split('').reduce((a, s, i) => a + (any.charCodeAt(i) * (i + 1)), 0x12345678).toString();
+  } else {
+    return Util.checksum(JSON.stringify(any).replace(/\s+/g, ''))
+  }
+};
 
 module.exports = Util;

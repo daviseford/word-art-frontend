@@ -99,7 +99,7 @@ $(document).ready(() => {
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
     const essential_opts = Form.get_opts(version);
     start_load();
-    essential_opts.checksum = Util.checksumObj(essential_opts);
+    essential_opts.checksum = Util.checksum(essential_opts);
 
     console.log(essential_opts);
 
