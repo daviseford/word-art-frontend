@@ -4,13 +4,6 @@ const exclamations = ['Dope!', 'Sick!', 'Wow!', 'Really nice work -',
   'Could it be? YES!', "Honestly, I'm impressed -", "Superlative!", "Can you believe it?",
   'Outstanding!', '[Generic Positive Expression]!', 'I can tell you are smart -',];
 
-// Util.whatsapp = (txt) => {
-// regex to remove timestamp + username: ^\[[\S]+[\s][\S]+[\s]\wM\]\s[\w\s]+:\s
-// need to also remove <image omitted> and <audio omitted>
-// emojis?
-// also need to add a period to the end of each line: find ($), replace $1\.
-// }
-
 /**
  * Remove common Project Gutenberg watermarks
  * @param txt

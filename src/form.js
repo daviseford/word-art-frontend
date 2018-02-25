@@ -1,6 +1,7 @@
 const Util = require('./util');
+const Config = require('./config');
 
-const get_opts = (version = 1) => {
+const get_main_opts = () => {
   // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
   const form = $('#word_art_form');
   const input_text = $('#input_text');
@@ -25,7 +26,7 @@ const get_opts = (version = 1) => {
     split_pre_parsed,
     color,
     node_colors,
-    version,
+    version: Config.version,
     bg_color,
   };
 
@@ -46,5 +47,5 @@ const get_opts = (version = 1) => {
 
 
 module.exports = {
-  get_opts,
+  get_main_opts,
 }
