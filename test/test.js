@@ -111,7 +111,7 @@ describe('Util.gutenberg', function () {
 
 describe('Regexes', function () {
   it('should fix 1,234 -> 1234', function () {
-    const txt = '1,234'.replace(/(\d+),(\d+)/gm, (m, p1, p2) => p1 + p2);
+    const txt = '1,234'.replace(/(\d),(\d)/gm, (a, b, c) => b + c);
     expect(txt).to.equal('1234')
   })
 });

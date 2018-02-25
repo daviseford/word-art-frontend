@@ -30,32 +30,36 @@ Util.gutenberg = (txt) => {
 };
 
 /**
+ * Mega stripper
+ * @param txt
+ */
+Util.stripChars = (txt) => {
+  return txt.replace(/[\n\r‘’\u2018\u2019\u201A\'“”\u201C\u201D\u201E\"\u02C6\u2039<\u203A>\u02DC\u00A0\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, ' ')
+};
+
+/**
  * Removes unnecessary characters from a string
  * @param txt
  * @returns {string}
  */
 Util.stripText = (txt) => {
-  return Util.gutenberg(txt)
-      .trim()
-      .toLowerCase()
-      .replace(/[‘’\u2018\u2019\u201A\']/gm, " ") // single quotes
-      .replace(/[“”\u201C\u201D\u201E\"]/gm, ' ') // double quotes
-      .replace(/\u2026/gm, ".")                 // special ellipsis
-      .replace(/\u02C6/gm, " ")                 // circumflex
-      .replace(/[\u2039<\u203A>]/gm, " ")       // angle brackets
-      .replace(/[\u02DC\u00A0]/gm, " ")         // spaces
-      .replace(/\d+:\d+/gm, " ")                // bible verses, lol, i.e. 31:12
-      .replace(/(\d+),(\d+)/gm, (m, p1, p2) => p1 + p2)   // convert 1,234 -> 1234
-      .replace(/[\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, " ")  // unnecessary punctuation
+  txt = Util.gutenberg(txt)
+      .trim().toLowerCase()
+      .replace(/\u2026/gm, ".")                   // special ellipsis
+      .replace(/(\d),(\d)/gm, (a, b, c) => b + c) // convert 1,234 -> 1234
+
+  return Util.stripChars(txt)
       .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
-      .replace(/(\r\n|\n|\r)/gm, " ")           // strip newlines
       .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
       .replace(/\s+\./gm, ".")                  // removes the extra space in "end of sentence ."
       .replace(/\.\s+/gm, ".")                  // removes the extra space in ".  start of sentence"
 };
 
 Util.getText = (txt) => {
+  // const t0 = performance.now()
   txt = Util.stripText(txt);
+  // const t1 = performance.now()
+  // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
   return txt.split('.').length >= 2 ? txt : 'too.short.';
 };
 
