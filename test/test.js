@@ -63,7 +63,6 @@ describe('Util.getText', function () {
   });
 });
 
-// todo fix gutenberg more better
 describe('Util.gutenberg', function () {
   it('should remove Project Gutenberg header', function () {
     const dickens = `
@@ -107,6 +106,45 @@ describe('Util.gutenberg', function () {
     const gutenberg_text = Util.gutenberg(frank).trim();
     expect(gutenberg_text).to.equal('He sprang from the cabin-window as he said this, upon the ice raft which lay close to the vessel.');
   });
+
+  it('should be selective about removal', function () {
+    const custom = `
+     80=2y3hr9q[84tmwfg ,/s s49tuj0u**Y*#@r hh8*******Y#8r82hi2nfds/f *****
+    Character set encoding: UTF-8
+    *** IMPORTANT STUFF DESIGNED TO TRIP UP THE REGEX ***
+    
+    *** START OF THIS PROJECT GUTENBERG EBOOK A TALE OF TWO CITIES ***
+    
+   I should be the only text left, 
+   even though technically, this is the start of this project gutenberg ebook
+   and this is *** THE END ***
+    
+    *** END OF THIS PROJECT GUTENBERG EBOOK A TALE OF TWO CITIES ***
+    I BET THIS MESS WITH IT
+    *** START OF THIS PROJECT GUTENBERG EBOOK A TALE OF TWO CITIES ***
+    ***** This file should be named 98-0.txt or 98-0.zip *****
+    This and all associated files of various formats will be found in:
+            http://www.gutenberg.org/9/98/`;
+    const gutenberg_text = Util.gutenberg(custom).trim();
+    expect(gutenberg_text).to.equal('I should be the only text left, \n   even though technically, this is the start of this project gutenberg ebook\n   and this is *** THE END ***');
+
+  });
+
+  it('should leave non-gutenberg files alone', function () {
+    const innocent = `
+    *** IMPORTANT STUFF DESIGNED TO TRIP UP THE REGEX ***
+    *** START OF THIS DAMN ASTERIK STUFF ***
+    *** END OF THIS EBOOK FRANKLY it SUCKED ***
+    project gutenberg is the best
+    I BET THIS MESS WITH IT
+    *** START OF A TALE OF TWO CITIES ***
+    This and all associated files of various formats will be found in:
+            http://www.gutenberg.org/9/98/`;
+    const gutenberg_text = Util.gutenberg(innocent);
+    expect(gutenberg_text).to.equal(innocent);
+
+  });
+
 });
 
 describe('Text Manipulation', function () {

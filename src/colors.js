@@ -44,7 +44,7 @@ const assignPrefillFuncs = () => {
     $(`#${x.id}`).click((e) => {
       e.preventDefault()
       e.stopPropagation()
-      console.log(`Updated with preset ${x.name}.`);
+      console.log(`Updated with color preset ${x.name}.`);
       color.val(x.color)
       bg_color.val(x.bg_color)
       split_color.val(x.split_color)
