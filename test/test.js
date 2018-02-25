@@ -19,6 +19,11 @@ describe('Util.checksum', function () {
     expect(Util.checksum(str2)).to.not.equal(Util.checksum(str3))
   });
 
+  it('should create a default checksum if passed null', function () {
+    expect(Util.checksum(null)).to.not.equal(null);
+    expect(Util.checksum(null)).to.equal(Util.checksum(null));
+  });
+
 });
 
 describe('Util.toHex', function () {
@@ -58,30 +63,6 @@ describe('Util.getText', function () {
   });
 });
 
-
-describe('Util.getSimpleParse', function () {
-  it('should return 2 sentence lengths if the user puts less than 2 sentences in', function () {
-    const text = Util.getText('sample');
-    const res = Util.getSimpleParse(text);
-    expect(res).to.have.ordered.members([1, 1])
-  });
-
-  it('should properly parse a simple paragraph', function () {
-    const text = Util.getText('The script calculates the number of sentences in a ' +
-        'given text input (1,349 in this case). Once the script has ' +
-        'reduced the book to a list of sentences, we then transform ' +
-        'those sentences into a number representing the number of words ' +
-        'in a sentence. The previous sentence, for example, would be ' +
-        'represented by 28 (28 words). We then draw a path using Python ' +
-        'and SVG. Each straight line represents a sentence in the book - ' +
-        'and its length is determined by how many words are in the sentence. ' +
-        'At the end of each sentence, the path turns left 90 degrees.');
-    const sentence_lengths = Util.getSimpleParse(text);
-    expect(sentence_lengths.length).to.equal(6);
-    expect(sentence_lengths).to.have.ordered.members([16, 28, 12, 9, 22, 12])
-  });
-});
-
 describe('Util.gutenberg', function () {
   it('should remove Project Gutenberg header/footer', function () {
     const frank = `
@@ -110,9 +91,66 @@ describe('Util.gutenberg', function () {
   });
 });
 
-describe('Regexes', function () {
+describe('Text Manipulation', function () {
   it('should fix 1,234 -> 1234 and don\'t -> dont', function () {
-    const txt = "don't have 1,234 babies".replace(/(\w)[\u2019\'](\w)|(\d),(\d)/gm, (a, b, c, d, e) => b ? b + c : d + e);
+    const txt = Util.concatenateContractions("don't have 1,234 babies")
     expect(txt).to.equal('dont have 1234 babies')
   })
+
+  it('should normalize sentence endings', function () {
+    const txt = Util.normalizeSentenceEndings("a sample of the spacing . that can . occur.")
+    expect(txt).to.equal('a sample of the spacing.that can.occur.')
+  })
 });
+
+
+describe('Util.getSimpleParse', function () {
+  it('should return 2 sentence lengths if the user puts less than 2 sentences in', function () {
+    const text = Util.getText('sample');
+    const res = Util.getSimpleParse(text);
+    expect(res).to.have.ordered.members([1, 1])
+  });
+
+  it('should properly parse a simple paragraph', function () {
+    const text = Util.getText('The script calculates the number of sentences in a ' +
+        'given text input (1,349 in this case). Once the script has ' +
+        'reduced the book to a list of sentences, we then transform ' +
+        'those sentences into a number representing the number of words ' +
+        'in a sentence. The previous sentence, for example, would be ' +
+        'represented by 28 (28 words). We then draw a path using Python ' +
+        'and SVG. Each straight line represents a sentence in the book - ' +
+        'and its length is determined by how many words are in the sentence. ' +
+        'At the end of each sentence, the path turns left 90 degrees.');
+    const sentence_lengths = Util.getSimpleParse(text);
+    expect(sentence_lengths.length).to.equal(6);
+    expect(sentence_lengths).to.have.ordered.members([16, 28, 12, 9, 22, 12])
+  });
+});
+
+
+describe('Util.getSplitParse', function () {
+  it('should return 2 sentence lengths if the user puts less than 2 sentences in', function () {
+    const text = Util.getText('sample');
+    const res = Util.getSplitParse(text, {words: ['lol'], color: '#fff'}, '#000');
+    expect(res.length).to.equal(2)
+  });
+
+  it('should properly parse a simple paragraph', function () {
+    const text = Util.getText('The script calculates the number of sentences in a ' +
+        'given text input (1,349 in this case). Once the script has ' +
+        'reduced the book to a list of sentences, we then transform ' +
+        'those sentences into a number representing the number of words ' +
+        'in a sentence. The previous sentence, for example, would be ' +
+        'represented by 28 (28 words). We then draw a path using Python ' +
+        'and SVG. Each straight line represents a sentence in the book - ' +
+        'and its length is determined by how many words are in the sentence. ' +
+        'At the end of each sentence, the path turns left 90 degrees.');
+    const sentence_lengths = Util.getSplitParse(text, {words: ['script'], color: '#fff'}, '#000');
+    expect(sentence_lengths.length).to.equal(6);
+    expect(sentence_lengths[0].color).to.equal('#fff')
+    expect(sentence_lengths[0].length).to.equal(16)
+    expect(sentence_lengths[2].color).to.equal('#000')
+    expect(sentence_lengths[2].length).to.equal(12)
+  });
+});
+

@@ -33,10 +33,34 @@ Util.gutenberg = (txt) => {
  * Mega stripper
  * @param txt
  */
-Util.stripChars = (txt) => {
+Util.stripPunctuationChars = (txt) => {
   return txt.replace(/[\n\r‘’\u2018\u2019\u201A\'“”\u201C\u201D\u201E\"\u02C6\u2039<\u203A>\u02DC\u00A0\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, ' ')
 };
 
+/**
+ * Fixes two common contractions
+ * 1,234 -> 1234
+ * ain't -> aint
+ * @param txt
+ * @returns {string}
+ */
+Util.concatenateContractions = (txt) => {
+  return txt.replace(/(\w)[\u2019'](\w)|(\d),(\d)/gm, (a, b, c, d, e) => b ? b + c : d + e);
+};
+
+/**
+ * Removes extraneous spacing around sentence beginnings/endings
+ * and replaces !? and ... with .
+ * @param txt
+ * @returns {string}
+ */
+Util.normalizeSentenceEndings = (txt) => {
+  return txt.replace(/\u2026/gm, ".")   // special ellipsis
+      .replace(/([!?]|\.{2,})/gm, ".")  // replace !?... with . to save time parsing later
+      .replace(/\s{2,}/gm, " ")         // anything above 1 space is unnecessary
+      .replace(/\s+\./gm, ".")          // removes the extra space in "end of sentence ."
+      .replace(/\.\s+/gm, ".")          // removes the extra space in ".  start of sentence"
+};
 
 /**
  * Removes unnecessary characters from a string
@@ -44,17 +68,11 @@ Util.stripChars = (txt) => {
  * @returns {string}
  */
 Util.stripText = (txt) => {
-  txt = Util.gutenberg(txt)
-      .trim().toLowerCase()
-      .replace(/\u2026/gm, ".") // special ellipsis
-      .replace(/(\w)[\u2019'](\w)|(\d),(\d)/gm, (a, b, c, d, e) => b ? b + c : d + e);
-  // 1,234 -> 1234, "don't" -> "dont"
-
-  return Util.stripChars(txt)
-      .replace(/([!?]|\.{2,})/gm, ".")    // replace !?... with . to save time parsing later
-      .replace(/\s{2,}/gm, " ")           // anything above 1 space is unnecessary
-      .replace(/\s+\./gm, ".")            // removes the extra space in "end of sentence ."
-      .replace(/\.\s+/gm, ".")            // removes the extra space in ".  start of sentence"
+  txt = Util.gutenberg(txt).trim().toLowerCase()
+  txt = Util.concatenateContractions(txt)
+  txt = Util.stripPunctuationChars(txt)
+  txt = Util.normalizeSentenceEndings(txt)
+  return txt
 };
 
 Util.getText = (txt) => {
@@ -85,7 +103,6 @@ Util.getSimplePathStr = (array_of_ints) => {
 Util.getSplitParse = (input_text, split_dict, primary_color) => {
   const sentences = input_text.match(/[^\.!\?]+[\.!\?]+/g);
   const default_color = primary_color || "#14B6D4";
-
   return sentences.map(words => {
     let segment_color = default_color;
     split_dict['words'].forEach(word => {
@@ -109,6 +126,11 @@ Util.toHex = (txt) => {
   return Util.isHexCode(`#${txt}`) ? `#${txt}` : null;
 };
 
+/**
+ * Remove empty top-level keys from an object
+ * @param obj
+ * @returns {{}}
+ */
 Util.removeEmptyKeys = (obj) => {
   return Object.keys(obj).reduce((a, key) => {
     if (!obj[key] || obj[key] === '') return a;
@@ -128,7 +150,7 @@ Util.extensionPNGtoSVG = (filename) => filename.replace(/.png/g, '.svg');
 Util.getFileName = (url) => url.substring(url.lastIndexOf('/') + 1);
 
 Util.checksum = (any) => {
-  if (!any) return null;
+  any = !any ? '0000000000000000' : any;
   if (typeof any === 'string') {
     return any.split('').reduce((a, s, i) => a + (any.charCodeAt(i) * (i + 1)), 0x12345678).toString();
   } else {
