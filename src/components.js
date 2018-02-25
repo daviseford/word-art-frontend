@@ -76,7 +76,7 @@ Components.makeSwatchHTML = (config_obj) => {
   return `
    <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card mb-1 box-shadow">
             <img class="card-img-top" style="background-color: ${config_obj.bg_color}; width: 100%; height: 100px;">
             <div class="card-body text-center">
@@ -86,7 +86,7 @@ Components.makeSwatchHTML = (config_obj) => {
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-xs-5 col-sm-6 col-md-4 col-lg-4">
         <div class="card mb-1 box-shadow">
             <img class="card-img-top" style="background-color: ${config_obj.color}; width: 100%; height: 100px;">
             <div class="card-body text-center">
@@ -96,7 +96,7 @@ Components.makeSwatchHTML = (config_obj) => {
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-xs-5 col-sm-6 col-md-4 col-lg-4">
         <div class="card mb-1 box-shadow">
             <img class="card-img-top" style="background-color: ${config_obj.split_color}; width: 100%; height: 100px;">
             <div class="card-body text-center">
