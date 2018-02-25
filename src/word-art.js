@@ -1,5 +1,6 @@
 const Util = require('./util');
 const Form = require('./form');
+const Colors = require('./colors');
 
 $(document).ready(() => {
   const version = 2;  // update this to invalidate all previous checksums
@@ -10,6 +11,8 @@ $(document).ready(() => {
   const form = $('#word_art_form');
   const results_div = $('#display_results');
   const loading_div = $('#display_loading');
+
+  Colors.assignPrefillFuncs() // Display and set up the prefill buttons
 
   const start_load = () => {
     form.hide(0);

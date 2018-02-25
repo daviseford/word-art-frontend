@@ -15,7 +15,7 @@ describe('Util.checksum', function () {
     const str2 = 'gangsta paradise';
     const str3 = 'gangsta  paradise';
     expect(Util.checksum(str1)).to.equal(Util.checksum(str1));
-    expect(Util.checksum(str1)).to.not.equal(Util.checksum(str2))
+    expect(Util.checksum(str1)).to.not.equal(Util.checksum(str2));
     expect(Util.checksum(str2)).to.not.equal(Util.checksum(str3))
   });
 
@@ -63,7 +63,25 @@ describe('Util.getText', function () {
   });
 });
 
+// todo fix gutenberg more better
 describe('Util.gutenberg', function () {
+  it('should remove Project Gutenberg header', function () {
+    const dickens = `
+    The Project Gutenberg EBook of A Tale of Two Cities, by Charles Dickens
+    Character set encoding: UTF-8
+    
+    *** START OF THIS PROJECT GUTENBERG EBOOK A TALE OF TWO CITIES ***
+    
+    Produced by Judith Boss
+    
+    *** END OF THIS PROJECT GUTENBERG EBOOK A TALE OF TWO CITIES ***
+    ***** This file should be named 98-0.txt or 98-0.zip *****
+    This and all associated files of various formats will be found in:
+            http://www.gutenberg.org/9/98/`;
+    const gutenberg_text = Util.gutenberg(dickens).trim();
+    expect(gutenberg_text).to.equal('Produced by Judith Boss');
+
+  });
   it('should remove Project Gutenberg header/footer', function () {
     const frank = `
     Project Gutenberg's Frankenstein, by Mary Wollstonecraft (Godwin) Shelley
@@ -93,12 +111,12 @@ describe('Util.gutenberg', function () {
 
 describe('Text Manipulation', function () {
   it('should fix 1,234 -> 1234 and don\'t -> dont', function () {
-    const txt = Util.concatenateContractions("don't have 1,234 babies")
+    const txt = Util.concatenateContractions("don't have 1,234 babies");
     expect(txt).to.equal('dont have 1234 babies')
-  })
+  });
 
   it('should normalize sentence endings', function () {
-    const txt = Util.normalizeSentenceEndings("a sample of the spacing . that can . occur.")
+    const txt = Util.normalizeSentenceEndings("a sample of the spacing . that can . occur.");
     expect(txt).to.equal('a sample of the spacing.that can.occur.')
   })
 });
@@ -147,9 +165,9 @@ describe('Util.getSplitParse', function () {
         'At the end of each sentence, the path turns left 90 degrees.');
     const sentence_lengths = Util.getSplitParse(text, {words: ['script'], color: '#fff'}, '#000');
     expect(sentence_lengths.length).to.equal(6);
-    expect(sentence_lengths[0].color).to.equal('#fff')
-    expect(sentence_lengths[0].length).to.equal(16)
-    expect(sentence_lengths[2].color).to.equal('#000')
+    expect(sentence_lengths[0].color).to.equal('#fff');
+    expect(sentence_lengths[0].length).to.equal(16);
+    expect(sentence_lengths[2].color).to.equal('#000');
     expect(sentence_lengths[2].length).to.equal(12)
   });
 });

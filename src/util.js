@@ -25,6 +25,9 @@ Util.gutenberg = (txt) => {
   }
   if (txt.includes(start_delim)) {
     txt = txt.replace(/[.\s\w-:,\[\]\#\S]+\*{3}/gm, ' ');
+    // const delim = txt.match(/^.+?(?=START OF THIS PROJECT GUTENBERG EBOOK [\w\s]+\*\*\*)(.+)$/gm)[0];
+    // txt = txt.slice(txt.indexOf(delim) + delim.length, txt.length);
+    // console.log(txt)
   }
   return txt
 };
