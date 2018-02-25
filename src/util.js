@@ -37,6 +37,7 @@ Util.stripChars = (txt) => {
   return txt.replace(/[\n\r‘’\u2018\u2019\u201A\'“”\u201C\u201D\u201E\"\u02C6\u2039<\u203A>\u02DC\u00A0\u2013\u2014,:;\-\+\\\/\(\)\*]/gm, ' ')
 };
 
+
 /**
  * Removes unnecessary characters from a string
  * @param txt
@@ -45,14 +46,15 @@ Util.stripChars = (txt) => {
 Util.stripText = (txt) => {
   txt = Util.gutenberg(txt)
       .trim().toLowerCase()
-      .replace(/\u2026/gm, ".")                   // special ellipsis
-      .replace(/(\d),(\d)/gm, (a, b, c) => b + c) // convert 1,234 -> 1234
+      .replace(/\u2026/gm, ".") // special ellipsis
+      .replace(/(\w)[\u2019'](\w)|(\d),(\d)/gm, (a, b, c, d, e) => b ? b + c : d + e);
+  // 1,234 -> 1234, "don't" -> "dont"
 
   return Util.stripChars(txt)
-      .replace(/([!\?]|\.{2,})/gm, ".")         // replace !?... with . to save time parsing later
-      .replace(/\s{2,}/gm, " ")                 // anything above 1 space is unnecessary
-      .replace(/\s+\./gm, ".")                  // removes the extra space in "end of sentence ."
-      .replace(/\.\s+/gm, ".")                  // removes the extra space in ".  start of sentence"
+      .replace(/([!?]|\.{2,})/gm, ".")    // replace !?... with . to save time parsing later
+      .replace(/\s{2,}/gm, " ")           // anything above 1 space is unnecessary
+      .replace(/\s+\./gm, ".")            // removes the extra space in "end of sentence ."
+      .replace(/\.\s+/gm, ".")            // removes the extra space in ".  start of sentence"
 };
 
 Util.getText = (txt) => {

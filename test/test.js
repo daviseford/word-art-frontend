@@ -2,7 +2,7 @@ const Util = require('../src/util');
 const expect = require('chai').expect;
 
 
-describe('Util.checksum and checksumObj', function () {
+describe('Util.checksum', function () {
   it('should create checksums from objects', function () {
     const obj1 = {a: 'str', b: [{'a key': 2, b: '12'}]};
     const obj2 = {a: 'str2', c: [{'b key': 2, xxx: null}]};
@@ -44,7 +44,8 @@ describe('Util.getText', function () {
     I am preparing to depart.  I am going to unexplored regions, to “the
     land of mist and snow,” but I shall kill no albatross; therefore do not
     be alarmed for my safety or if I should come back to you as worn and
-    woeful as the “Ancient Mariner.” A question mark?  Excitedly!    `;
+    woeful as the “Ancient Mariner.” A question mark and contraction ain't stopping this?  
+    Excitedly!    `;
     const sample = Util.getText(txt);
     const result = 'i cannot describe to you my sensations on the near prospect of my ' +
         'undertaking.it is impossible to communicate to you a conception of ' +
@@ -52,7 +53,7 @@ describe('Util.getText', function () {
         'i am preparing to depart.i am going to unexplored regions to the land of ' +
         'mist and snow but i shall kill no albatross therefore do not be alarmed ' +
         'for my safety or if i should come back to you as worn and woeful as the ' +
-        'ancient mariner.a question mark.excitedly.';
+        'ancient mariner.a question mark and contraction aint stopping this.excitedly.';
     expect(sample).to.equal(result)
   });
 });
@@ -110,8 +111,8 @@ describe('Util.gutenberg', function () {
 });
 
 describe('Regexes', function () {
-  it('should fix 1,234 -> 1234', function () {
-    const txt = '1,234'.replace(/(\d),(\d)/gm, (a, b, c) => b + c);
-    expect(txt).to.equal('1234')
+  it('should fix 1,234 -> 1234 and don\'t -> dont', function () {
+    const txt = "don't have 1,234 babies".replace(/(\w)[\u2019\'](\w)|(\d),(\d)/gm, (a, b, c, d, e) => b ? b + c : d + e);
+    expect(txt).to.equal('dont have 1234 babies')
   })
 });
