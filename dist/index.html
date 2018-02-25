@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Word Art Generator</title>
+
+    <!-- Facebook Open Graph Metadata -->
+    <meta property="og:site_name" content="daviseford">
+    <meta property="og:title" content="Word Art Generator">
+    <meta property="og:type" content="article">
+    <meta name="description" content="Generate art using text!">
+    <meta property="og:description" content="Generate art using text!">
+    <meta property="og:url" content="http://daviseford.com/word-art/">
+    <meta property="og:image" content="https://daviseford.com/blog/public/img/thumbnails/cliff_stoll/cuckoos_egg.png">
+    <meta property="profile:first_name" content="Davis">
+    <meta property="profile:last_name" content="Ford">
+    <meta property="og:locale" content="en_US"/>
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/blog/atom.xml">
+</head>
+
+
+<body>
+<header>
+    <div class=row>
+        <div class="col-8 offset-2">
+            <div class="row pt-1">
+                <div class="col-xs-12 col-md-12 col-lg-4 col-xl-2 offset-xl-2 text-center"><a class=navbar-brand
+                                                                                              href="/blog/">daviseford</a>
+                </div>
+                <div class="col-xs-12 col-md-12 col-lg-8 col-xl-7">
+                    <ul class="nav justify-content-center">
+                        <li class=nav-item><a href=/blog/pages/projects.html class=nav-link>Projects</a></li>
+                        <li class=nav-item><a href=https://github.com/daviseford class=nav-link target=_blank>GitHub</a>
+                        </li>
+                        <li class=nav-item><a class=nav-link href=/blog/pages/archive.html>Archive</a></li>
+                        <li class=nav-item><a class=nav-link href=/blog/pages/tags.html>Tags</a></li>
+                        <li class=nav-item><a class=nav-link href=/blog/public/docs/davis_ford_resume.pdf>CV</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="col-xs-10 offset-xs-1 col-sm-8 offset-sm-2 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+        <div class="row justify-content-center">
+            <div id="display_loading" class="align-content-center text-center"></div>
+            <div id="display_results" class="align-content-center text-center"></div>
+        </div>
+
+        <div class="row">
+            <!--https://bootstrapformbuilder.com/-->
+            <form id="word_art_form">
+                <div class="form-group">
+                    <label for="input_text">Text
+                        <small class="text-muted"> Required</small>
+                    </label>
+                    <textarea id="input_text" name="input_text" cols="40" rows="5"
+                              aria-describedby="input_textHelpBlock"
+                              required="required" class="form-control"></textarea>
+                    <span id="input_textHelpBlock" class="form-text text-muted">
+                        Paste your text in here. It will be parsed and returned as an SVG file.
+                        <br/>
+                        <small>Hint: This works better with more text -
+                            try dropping a <a href="http://www.gutenberg.org/browse/scores/top" target="_blank">Project Gutenberg</a>
+                            novel in here :)</small>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="input_line_color">Line Color
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-line-chart"></i>
+                        </div>
+                        <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
+                               aria-describedby="input_line_colorHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here.<br/><small>This will be the primary color of the SVG path.</small></span>
+                </div>
+                <div class="form-group">
+                    <label for="input_line_bg_color">Background Color
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-paint-brush"></i>
+                        </div>
+                        <input id="input_line_bg_color" name="input_line_bg_color" placeholder="#FFF" type="text"
+                               aria-describedby="input_line_bg_colorHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_line_bg_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color here.</span>
+                </div>
+                <div class="form-group">
+                    <label for="input_node_colors">Start/End Point Colors
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-circle"></i>
+                        </div>
+                        <input id="input_node_colors" name="input_node_colors" placeholder="#F26101,#4A5E7F" type="text"
+                               aria-describedby="input_node_colorsHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_node_colorsHelpBlock" class="form-text text-muted">
+                        Two comma-separated hexadecimal colors.<br/>
+                        <small>If this is left empty, the start and end points will not be labelled.</small>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="input_split_words">Highlight Words
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-binoculars"></i>
+                        </div>
+                        <input id="input_split_words" name="input_split_words" placeholder="quality, logic, knowledge"
+                               type="text"
+                               aria-describedby="input_split_wordsHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">
+                        Comma-separated words that you'd like highlighted.<br/>
+                        <small>Any sentence in your text that contains this word will receive a highlight of the color below.</small>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="input_split_color">Highlight Color
+                        <small class="text-muted"> Optional</small>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-eyedropper"></i>
+                        </div>
+                        <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text"
+                               aria-describedby="input_split_colorHelpBlock" class="form-control here">
+                    </div>
+                    <span id="input_split_colorHelpBlock" class="form-text text-muted">
+                        Input one hexadecimal color, including the # sign, here.<br/>
+                        <small>This will be the color used to highlight sentences containing the words above.</small>
+                    </span>
+                </div>
+                <div class="form-group justify-content-center text-center">
+                    <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="row">
+            <div class="col pb-2 justify-content-center text-center">
+                <div class="col text-center">
+                    <p class="lead text-capitalize text-small">Presets</p>
+                </div>
+                <div class="btn-group" role="group" id="color_preset">
+                    <button class="btn btn-sm btn-info" role="button" id="oceanfire">Ocean Fire</button>
+                    <button class="btn btn-sm btn-info" role="button" id="newnoir">New Noir</button>
+                    <button class="btn btn-sm btn-info" role="button" id="boldusa">Bold USA</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="album py-3 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Examples</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-4 box-shadow">
+                                <a href="https://daviseford.com/blog/public/img/word-art-pics/zen_split.png"
+                                   target="_blank">
+                                    <img class="card-img-top"
+                                         src="https://daviseford.com/blog/public/img/thumbnails/word-art-pics/zen_split.png"
+                                         alt="Zen and the Art of Motorcyle Maintenance">
+                                </a>
+                                <div class="card-body text-center">
+                                    <p class="card-text">Zen and the Art of Motorcycle Maintenance</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="card mb-4 box-shadow">
+                                <a href="https://daviseford.com/blog/public/img/word-art-pics/sound_of_music.png"
+                                   target="_blank">
+                                    <img class="card-img-top"
+                                         src="https://daviseford.com/blog/public/img/thumbnails/word-art-pics/sound_of_music.png"
+                                         alt="Sound of Music">
+                                </a>
+                                <div class="card-body text-center">
+                                    <p class="card-text">The Sound of Music</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div id="display_faq" class="align-content-center px-4">
+                            <p>
+                                <small>The premise of this art is that each sentence is broken down and saved as the sum
+                                    of the
+                                    contained words - e.g. the sentence "This is a wonderful day!" will be saved as
+                                    <strong>5</strong> for our
+                                    program. The path will move in a given direction for <strong>5</strong> units, and
+                                    then turn 90
+                                    degrees to
+                                    the left. Any time you see a long unbroken sentence, you can be sure the author has
+                                    been letting
+                                    their thoughts (and pens) wander.
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="text-center">
+    <small>&copy; 2018. All rights reserved. <a
+            href="mailto:davis.e.ford.alt+website@gmail.com">Email Me</a></small>
+</footer>
+
+<link rel="stylesheet" href="https://daviseford.com/blog/public/css/bootstrap4.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- Icons (favicons are located in the root directory of the daviseford-website-code S3 bucket, not in this repo) -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=eE5za3Wkak">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=eE5za3Wkak">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=eE5za3Wkak">
+<link rel="manifest" href="/manifest.json?v=eE5za3Wkak">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=eE5za3Wkak" color="#44bde3">
+<link rel="shortcut icon" href="/favicon.ico?v=eE5za3Wkak">
+<meta name="apple-mobile-web-app-title" content="daviseford">
+<meta name="application-name" content="daviseford">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-55820654-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+
+  gtag('config', 'UA-55820654-2');
+</script>
+
+
+<script type="text/javascript" src="app.bundle.js"></script></body>
+</html>
