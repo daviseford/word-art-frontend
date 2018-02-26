@@ -17,7 +17,9 @@ Util.gutenberg = (txt) => {
     txt = txt.split(end_delim)[0]
   }
   if (txt.includes(start_delim)) {
-    const delim = txt.match(/^.+?(?=START OF THIS PROJECT GUTENBERG EBOOK [\w\s]+\*\*\*)(.+)$/gm)[0];
+    let delim = txt.match(/^.+?(?=START OF THIS PROJECT GUTENBERG EBOOK [\w\s]+\*\*\*)(.+)$/gm);
+    if (!delim) return txt;
+    delim = delim[0];
     const slice_before_index = txt.indexOf(delim) + delim.length;
     txt = txt.slice(slice_before_index);
   }
