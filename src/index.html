@@ -56,117 +56,121 @@
         </div>
 
         <div class="row justify-content-center">
-            <!--https://bootstrapformbuilder.com/-->
-            <form id="word_art_form">
-                <div class="form-group">
-                    <label for="input_text">Text
-                        <small class="text-muted"> Required</small>
-                    </label>
-                    <textarea id="input_text" name="input_text" cols="40" rows="5"
-                              aria-describedby="input_textHelpBlock"
-                              required="required" class="form-control"></textarea>
-                    <span id="input_textHelpBlock" class="form-text text-muted">
+            <div class="col-12">
+                <!--https://bootstrapformbuilder.com/-->
+                <form id="word_art_form">
+                    <div class="form-group">
+                        <label for="input_text">Text
+                            <small class="text-muted"> Required</small>
+                        </label>
+                        <textarea id="input_text" name="input_text" cols="40" rows="5"
+                                  aria-describedby="input_textHelpBlock"
+                                  required="required" class="form-control"></textarea>
+                        <span id="input_textHelpBlock" class="form-text text-muted">
                         Paste your text in here. It will be parsed and returned as an SVG file.
                         <br/>
                         <small>Hint: This works better with more text -
                             try dropping a <a href="http://www.gutenberg.org/browse/scores/top" target="_blank">Project Gutenberg</a>
                             novel in here :)</small>
                     </span>
-                </div>
-                <div class="form-group">
-                    <label for="input_line_color">Line Color
-                        <small class="text-muted"> Optional</small>
-                    </label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-line-chart"></i>
-                        </div>
-                        <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
-                               aria-describedby="input_line_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here.<br/><small>This will be the primary color of the SVG path.</small></span>
-                </div>
-                <div class="form-group">
-                    <label for="input_line_bg_color">Background Color
-                        <small class="text-muted"> Optional</small>
-                    </label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-paint-brush"></i>
+                    <div class="form-group">
+                        <label for="input_line_color">Line Color
+                            <small class="text-muted"> Optional</small>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-line-chart"></i>
+                            </div>
+                            <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text"
+                                   aria-describedby="input_line_colorHelpBlock" class="form-control here">
                         </div>
-                        <input id="input_line_bg_color" name="input_line_bg_color" placeholder="#FFF" type="text"
-                               aria-describedby="input_line_bg_colorHelpBlock" class="form-control here">
+                        <span id="input_line_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color, including the # sign, here.<br/><small>This will be the primary color of the SVG path.</small></span>
                     </div>
-                    <span id="input_line_bg_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color here.</span>
-                </div>
-                <div class="form-group">
-                    <label for="input_node_colors">Start/End Point Colors
-                        <small class="text-muted"> Optional</small>
-                    </label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-circle"></i>
+                    <div class="form-group">
+                        <label for="input_line_bg_color">Background Color
+                            <small class="text-muted"> Optional</small>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                            <input id="input_line_bg_color" name="input_line_bg_color" placeholder="#FFF" type="text"
+                                   aria-describedby="input_line_bg_colorHelpBlock" class="form-control here">
                         </div>
-                        <input id="input_node_colors" name="input_node_colors" placeholder="#F26101,#4A5E7F" type="text"
-                               aria-describedby="input_node_colorsHelpBlock" class="form-control here">
+                        <span id="input_line_bg_colorHelpBlock" class="form-text text-muted">Input one hexadecimal color here.</span>
                     </div>
-                    <span id="input_node_colorsHelpBlock" class="form-text text-muted">
+                    <div class="form-group">
+                        <label for="input_node_colors">Start/End Point Colors
+                            <small class="text-muted"> Optional</small>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-circle"></i>
+                            </div>
+                            <input id="input_node_colors" name="input_node_colors" placeholder="#F26101,#4A5E7F"
+                                   type="text"
+                                   aria-describedby="input_node_colorsHelpBlock" class="form-control here">
+                        </div>
+                        <span id="input_node_colorsHelpBlock" class="form-text text-muted">
                         Two comma-separated hexadecimal colors.<br/>
                         <small>If this is left empty, the start and end points will not be labelled.</small>
                     </span>
-                </div>
-                <div class="form-group">
-                    <label for="input_split_words">Highlight Words
-                        <small class="text-muted"> Optional</small>
-                    </label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-binoculars"></i>
-                        </div>
-                        <input id="input_split_words" name="input_split_words" placeholder="quality, logic, knowledge"
-                               type="text"
-                               aria-describedby="input_split_wordsHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_wordsHelpBlock" class="form-text text-muted">
+                    <div class="form-group">
+                        <label for="input_split_words">Highlight Words
+                            <small class="text-muted"> Optional</small>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-binoculars"></i>
+                            </div>
+                            <input id="input_split_words" name="input_split_words"
+                                   placeholder="quality, logic, knowledge"
+                                   type="text"
+                                   aria-describedby="input_split_wordsHelpBlock" class="form-control here">
+                        </div>
+                        <span id="input_split_wordsHelpBlock" class="form-text text-muted">
                         Comma-separated words that you'd like highlighted.<br/>
                         <small>Any sentence in your text that contains this word will receive a highlight of the color below.</small>
                     </span>
-                </div>
-                <div class="form-group">
-                    <label for="input_split_color">Highlight Color
-                        <small class="text-muted"> Optional</small>
-                    </label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-eyedropper"></i>
-                        </div>
-                        <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text"
-                               aria-describedby="input_split_colorHelpBlock" class="form-control here">
                     </div>
-                    <span id="input_split_colorHelpBlock" class="form-text text-muted">
+                    <div class="form-group">
+                        <label for="input_split_color">Highlight Color
+                            <small class="text-muted"> Optional</small>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-eyedropper"></i>
+                            </div>
+                            <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text"
+                                   aria-describedby="input_split_colorHelpBlock" class="form-control here">
+                        </div>
+                        <span id="input_split_colorHelpBlock" class="form-text text-muted">
                         Input one hexadecimal color, including the # sign, here.<br/>
                         <small>This will be the color used to highlight sentences containing the words above.</small>
                     </span>
-                </div>
-                <div class="form-group justify-content-center text-center">
-                    <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
-                </div>
-            </form>
-        </div>
-
-
-        <div class="row">
-            <div class="col-12">
-                <form>
-                    <div class="form-group row">
-                        <label for="preset_color_select" class="col-4 col-form-label">Color Preset:</label>
-                        <div class="col-8">
-                            <select id="preset_color_select" name="preset_color_select"
-                                    aria-describedby="preset_color_selectHelpBlock" class="form-control">
-                            </select>
-                        </div>
+                    </div>
+                    <div class="form-group justify-content-center text-center">
+                        <button name="submit" type="submit" class="btn btn-primary">Generate SVG</button>
                     </div>
                 </form>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="form-group row">
+                            <label for="preset_color_select" class="col-5 col-form-label">Color Preset:</label>
+                            <div class="col-7">
+                                <select id="preset_color_select" name="preset_color_select"
+                                        aria-describedby="preset_color_selectHelpBlock" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="col-12" id="preset_color_swatch">
