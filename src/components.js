@@ -122,6 +122,7 @@ Components.makeSwatchHTML = (config_obj) => {
 
 Components.getPresetOptions = () => {
     const opts = Colors.Combos.map(x => `<option value="${x.id}">${x.name}</option>`)
+    opts.unshift('<option value="">Custom</option>')
     return opts
 };
 
