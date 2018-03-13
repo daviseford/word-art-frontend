@@ -76,7 +76,7 @@ Components.get_canvaspop_url = (url) => {
 };
 
 Components.preview = (png_url) => {
-    return `<div class="col-12 text-center">
+    return `<div class="col-12 pb-2 text-center">
                 <a href="${Components.get_canvaspop_url(png_url)}" target="_blank">
                     <img src="${png_url}" class="img-fluid" style="width: 200px;"/>
                 </a>
