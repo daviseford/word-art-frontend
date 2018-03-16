@@ -83,41 +83,54 @@ Components.preview = (png_url) => {
             </div>`
 };
 
-Components.makeSwatchHTML = (config_obj) => {
+Components.makeDesktopSwatch = (config_obj) => {
     return `
-   <div class="row">
-
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card mb-1 box-shadow">
-            <img class="card-img-top" style="background-color: ${config_obj.bg_color}; width: 100%; height: 100px;">
-            <div class="card-body text-center">
-                <p class="card-text">${config_obj.bg_color}</p>
-                <small class="text-muted">Background</small>
+    <div class="row d-none d-sm-none d-md-flex justify-content-center">
+        ${ [
+            {c:config_obj.bg_color, name: 'Background',},
+            {c:config_obj.color, name: 'Primary',},
+            {c:config_obj.split_color, name: 'Highlight',},
+        ].map(x => {
+            return `
+            <div class="col-4 my-3 text-center">
+            <div class="card mb-1 box-shadow">
+                <img class="card-img-top" style="background-color: ${x.c}; width: 100%; height: 100px;">
+                <div class="card-body text-center">
+                    <p class="card-text text-nowrap">${x.c}</p>
+                    <p class="text-small text-nowrap text-muted">${x.name}</p>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="col-xs-5 col-sm-6 col-md-4 col-lg-4">
-        <div class="card mb-1 box-shadow">
-            <img class="card-img-top" style="background-color: ${config_obj.color}; width: 100%; height: 100px;">
-            <div class="card-body text-center">
-                <p class="card-text">${config_obj.color}</p>
-                <small class="text-muted">Primary</small>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xs-5 col-sm-6 col-md-4 col-lg-4">
-        <div class="card mb-1 box-shadow">
-            <img class="card-img-top" style="background-color: ${config_obj.split_color}; width: 100%; height: 100px;">
-            <div class="card-body text-center">
-                <p class="card-text">${config_obj.split_color}</p>
-                <small class="text-muted">Highlight</small>
-            </div>
-        </div>
-    </div>
+            `
+        }).join('')}
     </div>
     `
+};
+
+Components.makeMobileSwatch = (config_obj) => {
+    return `
+   <div class="row justify-content-center d-flex d-sm-flex d-md-none">
+        ${ [
+            {c:config_obj.bg_color, name: 'Background',},
+            {c:config_obj.color, name: 'Primary',},
+            {c:config_obj.split_color, name: 'Highlight',},
+        ].map(x => {
+            return `
+                <div class="col">
+                    <span class="fa fa-square fa-5x" aria-hidden="true" style="color:${x.c}"></span>
+                    <br />
+                    <small class="text-muted text-capitalize">${x.c}</small>
+                    <br />
+                    <small class="text-muted text-capitalize">${x.name}</small>
+                </div>
+                `
+        }).join('')}
+    </div>
+    `
+};
+
+Components.makeSwatchHTML = (config_obj) => {
+    return `${Components.makeDesktopSwatch(config_obj)}\n${Components.makeMobileSwatch(config_obj)}`;
 };
 
 Components.getPresetOptions = () => {

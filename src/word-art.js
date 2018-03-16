@@ -10,6 +10,7 @@ $(document).ready(() => {
   const loading_div = $('#display_loading');
   const preset_select = $('#preset_color_select');
   const preset_div = $('#preset_color_swatch');
+  const color_input_fields = ['input_line_bg_color', 'input_split_color', 'input_line_color'];
 
   /* Add our preset options to the select menu */
   preset_select.html(Components.getPresetOptions())
@@ -22,6 +23,7 @@ $(document).ready(() => {
       $('#input_node_colors').val(config.node_colors.join(', '));
       $('#input_split_color').val(config.split_color);
       preset_div.html(Components.makeSwatchHTML(config));
+      color_input_fields.forEach(x => $(`#${x}`).change())  // trigger change
       console.log(`Updated with color preset ${config.name}.`);
     } else {
       preset_div.html(null);
@@ -40,11 +42,24 @@ $(document).ready(() => {
     form.show(0);
   };
 
+  const update_icon_color = (input, hex) => {
+    if (Util.isHexCode(hex)) {
+      $(`#${input}_icon`).css('color', Util.toHex(hex))
+    }
+  }
+
+  const make_icon_dynamic = (input) => {
+    $(`#${input}`)
+      .bind('input', (e) => update_icon_color(input, e.target.value))
+      .on('change', (e) => update_icon_color(input, e.target.value))
+  }
+
+  color_input_fields.forEach(make_icon_dynamic);  // make the icons change color dynamically
 
   form.submit((e) => {
     e.stopPropagation();
     e.preventDefault();
-    $("html, body").animate({scrollTop: 0}, "slow"); // smooth scroll to top
+    $("html, body").animate({ scrollTop: 0 }, "slow"); // smooth scroll to top
 
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
     const essential_opts = Form.get_main_opts();
@@ -56,7 +71,7 @@ $(document).ready(() => {
     $.ajax({
       url: Config.generate_svg_endpoint,
       method: 'post', data: JSON.stringify(essential_opts),
-      processData: false, headers: {'Accept': 'application/json'},
+      processData: false, headers: { 'Accept': 'application/json' },
       dataType: 'json',
     }).then(res => {
       console.log(res);
@@ -88,7 +103,7 @@ $(document).ready(() => {
     $.ajax({
       url: Config.generate_png_endpoint,
       method: 'post',
-      data: JSON.stringify({url, bg_color}),
+      data: JSON.stringify({ url, bg_color }),
       processData: false,
       headers: {
         'Accept': 'application/json'

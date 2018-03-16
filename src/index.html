@@ -96,8 +96,10 @@
                 </div>
             </div>
 
-            <div class="col-12" id="preset_color_swatch">
-                <!-- Color Swatch Preview goes here -->
+            <div class="row pb-1">
+                <div class="col-12 align-content-center text-center" id="preset_color_swatch">
+                    <!-- Color Swatch Preview goes here -->
+                </div>
             </div>
 
             <div class="row justify-content-center">
@@ -125,7 +127,7 @@
                             </label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-line-chart"></i>
+                                    <i class="fa fa-line-chart" id="input_line_color_icon"></i>
                                 </div>
                                 <input id="input_line_color" name="input_line_color" placeholder="#14B6D4" type="text" aria-describedby="input_line_colorHelpBlock"
                                     class="form-control here">
@@ -143,7 +145,7 @@
                             </label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-paint-brush"></i>
+                                    <i class="fa fa-paint-brush" id="input_line_bg_color_icon"></i>
                                 </div>
                                 <input id="input_line_bg_color" name="input_line_bg_color" placeholder="#FFF" type="text" aria-describedby="input_line_bg_colorHelpBlock"
                                     class="form-control here">
@@ -156,7 +158,7 @@
                             </label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-circle"></i>
+                                    <i class="fa fa-circle" id="input_node_colors_icon"></i>
                                 </div>
                                 <input id="input_node_colors" name="input_node_colors" placeholder="#F26101,#4A5E7F" type="text" aria-describedby="input_node_colorsHelpBlock"
                                     class="form-control here">
@@ -190,7 +192,7 @@
                             </label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-eyedropper"></i>
+                                    <i class="fa fa-eyedropper" id="input_split_color_icon"></i>
                                 </div>
                                 <input id="input_split_color" name="input_split_color" placeholder="#F22F00" type="text" aria-describedby="input_split_colorHelpBlock"
                                     class="form-control here">
@@ -271,7 +273,8 @@
         </small>
     </footer>
 
-    <link rel="stylesheet" href="https://daviseford.com/blog/public/css/bootstrap4.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -300,9 +303,12 @@
         gtag('config', 'UA-55820654-2');
     </script>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
 </body>
 

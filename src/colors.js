@@ -16,8 +16,8 @@ const Combos = [
     split_color: '#D7DCF2'
   },
   {
-    name: 'Bold USA',
-    id: 'boldusa',
+    name: 'Bold America',
+    id: 'boldamerica',
     color: '#E74C3C',
     bg_color: '#ECF0F1',
     node_colors: ['#2980B9', '#2C3E50'],
@@ -25,7 +25,7 @@ const Combos = [
   },
   {
     name: 'Yoshi\'s Egg',
-    id: 'yoshi',
+    id: 'yoshisegg',
     color: '#F5F5F5',
     bg_color: '#2BCC9E',
     node_colors: ['#E3E3E3', '#E3E3E3'],
@@ -119,6 +119,59 @@ const Combos = [
     node_colors: ['#15B2D3', '#15B2D3'],
     split_color: '#FFD700'
   },
+
+  {
+    name: 'Michigan Wolverines',
+    id: 'michiganwolverines',
+    color: '#FFD51D',
+    bg_color: '#00275D',
+    node_colors: ['#1D20FF', '#1D20FF'],
+    split_color: '#FFF'
+  },
+
+  {
+    name: 'Miami Hurricanes',
+    id: 'miamihurricane',
+    color: '#005030',
+    bg_color: '#FFF',
+    node_colors: ['#109C64', '#109C64'],
+    split_color: '#F47321'
+  },
+  {
+    name: 'Autumn',
+    id: 'autumnleaves',
+    color: '#EBA692',
+    bg_color: '#9C2706',
+    node_colors: ['#F5D278', '#F5D278'],
+    split_color: '#F3BC2E'
+  },
+
+  {
+    name: 'Berries',
+    id: 'berries',
+    color: '#724677',
+    bg_color: '#F4DBF7',
+    node_colors: ['#85C44C', '#85C44C'],
+    split_color: '#0F7EAA'
+  },
+  {
+    name: 'Winter Ice',
+    id: 'winterice',
+    color: '#FFF',
+    bg_color: '#42687C',
+    node_colors: ['#84A5B8', '#84A5B8'],
+    split_color: '#B3DAF1'
+  },
+
+  {
+    name: 'Ultra Violet - Floral Fantasies',
+    id: 'ultravioletfloralfantasies',
+    color: '#EDE858',
+    bg_color: '#6D5D95',
+    node_colors: ['#3F3E54', '#3F3E54'],
+    split_color: '#F7B2A9'
+  },
+
 
   // {
   //   name: '',
