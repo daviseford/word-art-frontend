@@ -30,6 +30,15 @@ $(document).ready(() => {
     }
   });
 
+  const send_ga_event = (val) => {
+    // Log event in Google Analytics
+    try {
+      ga('send', 'event', 'button', 'click', val);
+    } catch (err) {
+      // Pass
+    }
+  }
+
   const start_load = () => {
     form.hide(0);
     results_div.hide(0);
@@ -75,6 +84,7 @@ $(document).ready(() => {
       dataType: 'json',
     }).then(res => {
       console.log(res);
+      send_ga_event('generate_word_art')
       if (res.s3_url) {
         results_div.html(Components.svg_success(res.s3_url));
         if (!res.duplicate) {
