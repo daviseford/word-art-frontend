@@ -16,6 +16,22 @@ const Combos = [
     split_color: '#FFE81F'
   },
   {
+    name: 'Facebook',
+    id: 'facebook1',
+    color: '#3b5998',
+    bg_color: '#f7f7f7',
+    node_colors: ['#8b9dc3', '#8b9dc3'],
+    split_color: '#8b9dc3'
+  },
+  {
+    name: 'Facebook (Inversed)',
+    id: 'facebookinversed2',
+    color: '#f7f7f7',
+    bg_color: '#3b5998',
+    node_colors: ['#f7f7f7', '#f7f7f7'],
+    split_color: '#8b9dc3'
+  },
+  {
     name: 'Basecamp',
     id: 'basecamp',
     color: '#b3dcff',
