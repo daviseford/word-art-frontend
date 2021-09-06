@@ -8,6 +8,22 @@ const Combos = [
     split_color: '#F4C127'
   },
   {
+    name: 'Star Wars',
+    id: 'starwars',
+    color: '#FFFFFF',
+    bg_color: '#000000',
+    node_colors: ['#FFE81F', '#FFE81F'],
+    split_color: '#FFE81F'
+  },
+  {
+    name: 'Basecamp',
+    id: 'basecamp',
+    color: '#b3dcff',
+    bg_color: '#06991A',
+    node_colors: ['#A3FF7F', '#A3FF7F'],
+    split_color: '#A3FF7F'
+  },
+  {
     name: 'New Noir',
     id: 'newnoir',
     color: '#868A8B',
