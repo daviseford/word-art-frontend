@@ -2,18 +2,15 @@ const Util = require('./util');
 const Config = require('./config');
 
 const get_main_opts = () => {
-  // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
-  const form = $('#word_art_form');
   const input_text = $('#input_text');
   input_text.val(input_text.val().trim()); // Strip whitespace
-  const serialized = form.serializeArray();
-  const text = Util.getText(serialized[0].value);
-  const color = Util.toHex(serialized[1].value);
-  const bg_color = Util.toHex(serialized[2].value);
-  const node_colors = Util.getNodeColors(serialized[3].value);
+  const text = Util.getText(input_text.val());
+  const color = Util.toHex($('#input_line_color').val());
+  const bg_color = Util.toHex($('#input_line_bg_color').val());
+  const node_colors = Util.getNodeColors($('#input_node_colors').val());
   const split = {
-    words: Util.getSplitText(serialized[4].value),
-    color: Util.toHex(serialized[5].value)
+    words: Util.getSplitText($('#input_split_words').val()),
+    color: Util.toHex($('#input_split_color').val())
   };
   // console.log(text)
   const simple_pre_parsed = Util.getSimpleParse(text);

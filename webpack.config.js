@@ -1,8 +1,22 @@
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+
+class CopyAppCssPlugin {
+  apply(compiler) {
+    compiler.plugin('emit', (compilation, callback) => {
+      const css = fs.readFileSync(path.resolve(__dirname, 'src/app.css'));
+      compilation.assets['app.css'] = {
+        source: () => css,
+        size: () => css.length,
+      };
+      callback();
+    });
+  }
+}
 
 module.exports = {
   entry: {
@@ -23,6 +37,7 @@ module.exports = {
       'window.$': 'jquery'
     }),
     new CleanWebpackPlugin(['dist']),
+    new CopyAppCssPlugin(),
     new HtmlWebpackPlugin({
       title: 'Word Art Generator',
       template: './src/index.html',

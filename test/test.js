@@ -1,4 +1,6 @@
 const Util = require('../src/util');
+const Config = require('../src/config');
+const Components = require('../src/components');
 const expect = require('chai').expect;
 
 
@@ -36,10 +38,17 @@ describe('Util.toHex', function () {
   });
 });
 
+describe('Util.getSplitText', function () {
+  it('should ignore blank highlight terms and disable empty split input', function () {
+    expect(Util.getSplitText('quality, ,logic,')).to.have.ordered.members(['quality', 'logic']);
+    expect(Util.getSplitText('   ')).to.equal(null);
+  });
+});
+
 describe('Util.getText', function () {
-  it('should return \'too. short.\' if the user puts less than 2 sentences in', function () {
+  it('should preserve short normalized text without inventing sentences', function () {
     const res = Util.getText('short');
-    expect(res).to.equal('too.short.')
+    expect(res).to.equal('short')
   });
 
   it('should strip newlines, smart quotes, extra spaces, trim, and lowercase', function () {
@@ -60,6 +69,25 @@ describe('Util.getText', function () {
         'for my safety or if i should come back to you as worn and woeful as the ' +
         'ancient mariner.a question mark and contraction aint stopping this.excitedly.';
     expect(sample).to.equal(result)
+  });
+});
+
+describe('Util.getDistinctSentenceCount', function () {
+  it('counts unique normalized sentences', function () {
+    expect(Util.getDistinctSentenceCount('One! Two? One. Three.')).to.equal(3);
+  });
+
+  it('returns zero for empty input', function () {
+    expect(Util.getDistinctSentenceCount('   ')).to.equal(0);
+  });
+});
+
+describe('submission quality boundary', function () {
+  it('requires 20 distinct sentences and reports the same minimum', function () {
+    expect(Config.min_sentence_count).to.equal(20);
+    expect(Components.too_simple(Config.min_sentence_count)).to.contain(
+        'Try at least 20 distinct sentences'
+    );
   });
 });
 
@@ -161,10 +189,10 @@ describe('Text Manipulation', function () {
 
 
 describe('Util.getSimpleParse', function () {
-  it('should return 2 sentence lengths if the user puts less than 2 sentences in', function () {
+  it('should return the real sentence length for short input', function () {
     const text = Util.getText('sample');
     const res = Util.getSimpleParse(text);
-    expect(res).to.have.ordered.members([1, 1])
+    expect(res).to.have.ordered.members([1])
   });
 
   it('should properly parse a simple paragraph', function () {
@@ -185,10 +213,10 @@ describe('Util.getSimpleParse', function () {
 
 
 describe('Util.getSplitParse', function () {
-  it('should return 2 sentence lengths if the user puts less than 2 sentences in', function () {
+  it('should return the real sentence length for short input', function () {
     const text = Util.getText('sample');
     const res = Util.getSplitParse(text, {words: ['lol'], color: '#fff'}, '#000');
-    expect(res.length).to.equal(2)
+    expect(res.length).to.equal(1)
   });
 
   it('should properly parse a simple paragraph', function () {

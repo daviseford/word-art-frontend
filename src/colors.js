@@ -8,6 +8,54 @@ const Combos = [
     split_color: '#F4C127'
   },
   {
+    name: 'Letterpress',
+    id: 'letterpress',
+    color: '#185A8D',
+    bg_color: '#F1F5F7',
+    node_colors: ['#D0503F', '#E6A23C'],
+    split_color: '#B74132'
+  },
+  {
+    name: 'Mesa After Rain',
+    id: 'mesaafterrain',
+    color: '#F0D6B8',
+    bg_color: '#4B3031',
+    node_colors: ['#9DB8A2', '#D98E5F'],
+    split_color: '#E9B872'
+  },
+  {
+    name: 'Juniper & Brass',
+    id: 'juniperbrass',
+    color: '#D5B66F',
+    bg_color: '#183B36',
+    node_colors: ['#E8DDC8', '#8FB8A8'],
+    split_color: '#E77B63'
+  },
+  {
+    name: 'Blue Hour',
+    id: 'bluehour',
+    color: '#AFCBFF',
+    bg_color: '#18243A',
+    node_colors: ['#F4C67A', '#D87D8F'],
+    split_color: '#7CD6CF'
+  },
+  {
+    name: 'Persimmon Paper',
+    id: 'persimmonpaper',
+    color: '#B9472F',
+    bg_color: '#F4E7D5',
+    node_colors: ['#1F5B66', '#D2A43A'],
+    split_color: '#1F5B66'
+  },
+  {
+    name: 'Night Orchard',
+    id: 'nightorchard',
+    color: '#D7E38B',
+    bg_color: '#253328',
+    node_colors: ['#F0C36A', '#D98A78'],
+    split_color: '#E7A65A'
+  },
+  {
     name: 'Star Wars',
     id: 'starwars',
     color: '#FFFFFF',

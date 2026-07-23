@@ -73,16 +73,18 @@ Util.stripText = (txt) => {
 };
 
 Util.getText = (txt) => {
-  // const t0 = performance.now()
-  txt = Util.stripText(txt);
-  // const t1 = performance.now()
-  // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
-  return txt.split('.').length >= 2 ? txt : 'too.short.';
+  return Util.stripText(txt);
+};
+
+Util.getSentenceStrings = (txt) => txt.split('.').map(x => x.trim()).filter(Boolean);
+
+Util.getDistinctSentenceCount = (txt) => {
+  const normalized = Util.getText(txt);
+  return new Set(Util.getSentenceStrings(normalized)).size;
 };
 
 Util.getSimpleParse = (txt) => {
-  const sentences = txt.match(/[^\.!\?]+[\.!\?]+/g);
-  return sentences.map(x => x.split(' ').length)
+  return Util.getSentenceStrings(txt).map(x => x.split(/\s+/).length)
 };
 
 Util.getSimplePathStr = (array_of_ints) => {
@@ -98,7 +100,7 @@ Util.getSimplePathStr = (array_of_ints) => {
 
 
 Util.getSplitParse = (input_text, split_dict, primary_color) => {
-  const sentences = input_text.match(/[^\.!\?]+[\.!\?]+/g);
+  const sentences = Util.getSentenceStrings(input_text);
   const default_color = primary_color || "#14B6D4";
   return sentences.map(words => {
     let segment_color = default_color;
@@ -140,7 +142,10 @@ Util.removeEmptyKeys = (obj) => {
 Util.getExpression = () => Util.getRandomEntry(exclamations);
 Util.getNodeColors = (txt) => txt ? txt.split(',').map(x => Util.toHex(x) ? Util.toHex(x) : '#F26101') : null;
 Util.getRandomEntry = (arr) => arr[Math.floor(Math.random() * arr.length)];
-Util.getSplitText = (txt) => txt ? txt.split(',').map(x => x.trim().toLowerCase()) : null;
+Util.getSplitText = (txt) => {
+  const words = txt ? txt.split(',').map(x => x.trim().toLowerCase()).filter(Boolean) : [];
+  return words.length > 0 ? words : null;
+};
 Util.isHexCode = (txt) => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(txt);
 Util.extensionSVGtoPNG = (filename) => filename.replace(/.svg/g, '.png');
 Util.extensionPNGtoSVG = (filename) => filename.replace(/.png/g, '.svg');

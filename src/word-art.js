@@ -16,8 +16,8 @@ $(document).ready(() => {
   preset_select.html(Components.getPresetOptions())
   preset_select.change(function (event) {
     const preset = event.currentTarget.value || null;
-    if (preset && preset.length > 0 && Colors.Combos.filter(x => x.id === preset).length > 0) {
-      const config = Colors.Combos.filter(x => x.id === preset)[0];
+    const config = Colors.Combos.find(combo => combo.id === preset);
+    if (config) {
       $('#input_line_color').val(config.color);
       $('#input_line_bg_color').val(config.bg_color);
       $('#input_node_colors').val(config.node_colors.join(', '));
@@ -29,15 +29,6 @@ $(document).ready(() => {
       preset_div.html(null);
     }
   });
-
-  const send_ga_event = (val) => {
-    // Log event in Google Analytics
-    try {
-      ga('send', 'event', 'button', 'click', val);
-    } catch (err) {
-      // Pass
-    }
-  }
 
   const start_load = () => {
     form.hide(0);
@@ -53,7 +44,7 @@ $(document).ready(() => {
 
   const update_icon_color = (input, hex) => {
     if (Util.isHexCode(hex)) {
-      $(`#${input}_icon`).css('color', Util.toHex(hex))
+      $(`#${input}_icon`).css('background-color', Util.toHex(hex))
     }
   }
 
@@ -64,6 +55,22 @@ $(document).ready(() => {
   }
 
   color_input_fields.forEach(make_icon_dynamic);  // make the icons change color dynamically
+  preset_select.val(Config.default_preset).trigger('change');
+
+  const input_text = $('#input_text');
+  const sentence_count = $('#sentence_count');
+  const update_sentence_count = () => {
+    const count = Util.getDistinctSentenceCount(input_text.val());
+    sentence_count
+      .text(`${count} distinct sentence${count === 1 ? '' : 's'}`)
+      .toggleClass('is-ready', count >= Config.min_sentence_count);
+  };
+  let sentence_count_timer;
+  input_text.on('input', () => {
+    clearTimeout(sentence_count_timer);
+    sentence_count_timer = setTimeout(update_sentence_count, 100);
+  });
+  update_sentence_count();
 
   form.submit((e) => {
     e.stopPropagation();
@@ -71,11 +78,16 @@ $(document).ready(() => {
     $("html, body").animate({ scrollTop: 0 }, "slow"); // smooth scroll to top
 
     // https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
+    const distinct_sentence_count = Util.getDistinctSentenceCount(input_text.val());
+    if (distinct_sentence_count < Config.min_sentence_count) {
+      results_div.html(Components.too_simple(Config.min_sentence_count)).show(0);
+      input_text.focus();
+      return;
+    }
+
     const essential_opts = Form.get_main_opts();
     start_load();
     essential_opts.checksum = Util.checksum(essential_opts);
-
-    console.log(essential_opts);
 
     $.ajax({
       url: Config.generate_svg_endpoint,
@@ -83,8 +95,6 @@ $(document).ready(() => {
       processData: false, headers: { 'Accept': 'application/json' },
       dataType: 'json',
     }).then(res => {
-      console.log(res);
-      send_ga_event('generate_word_art')
       if (res.s3_url) {
         results_div.html(Components.svg_success(res.s3_url));
         if (!res.duplicate) {
@@ -101,8 +111,10 @@ $(document).ready(() => {
         const expected_url = `${Config.svg_bucket}${essential_opts.checksum}.svg`;
         results_div.html(Components.long_load_screen(expected_url));
       } else {
-        console.log('Error', err);
-        results_div.html(Components.svg_error(err.statusText));
+        const message = err.responseJSON && err.responseJSON.err
+          ? err.responseJSON.err
+          : err.statusText;
+        results_div.html(Components.svg_error(message));
       }
       end_load()
     })
@@ -122,7 +134,7 @@ $(document).ready(() => {
     }).then(res => {
       console.log(res);
       results_div.html(Components.png_success(res.svg_url))
-    }).catch(err => console.log(err))
+    }).catch(() => results_div.html(Components.svg_error('The PNG preview could not be generated. Your SVG is still ready.')))
   }
 
 });
