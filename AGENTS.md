@@ -30,8 +30,11 @@ The build works with the current local Node runtime but uses an obsolete Webpack
 - `src/config.js`: deployed endpoints and public bucket URLs
 - `src/colors.js`: presets
 - `src/index.html`: page template
+- `deploy.ps1`: canonical dry-run-first production deployment
+- `upload.sh`: compatibility wrapper around `deploy.ps1`
 - `serve.js`: dependency-free local static server; never proxy production APIs through it
 - `test/test.js`: Mocha coverage for utilities
+- `test/deploy.test.js` and `test/deploy-script.test.ps1`: deployment safety and control-flow coverage
 - `test/server.test.js`: local-server path safety and smoke coverage
 - `dist/`: tracked generated deployment output; never hand-edit it
 - `src/word-art.min.js`: historical artifact, not the Webpack entry point
@@ -47,7 +50,7 @@ Edit `src/`, test, then rebuild `dist/` when a source change is intended for dep
 
 ## Safety
 
-- `upload.sh` writes to production S3 and invalidates CloudFront. Never run it without explicit user approval.
+- `deploy.ps1` is dry-run-only unless `-Apply` is supplied. Never run `deploy.ps1 -Apply` or `upload.sh -Apply` without explicit user approval.
 - Do not POST probes to the production generation endpoints during diagnosis: generation can create public S3 objects and incur AWS cost.
 - Never put AWS credentials in browser code. A future local admin must call S3 from a trusted local backend or CLI.
 - Treat bucket objects as user submissions. Default all cleanup tools to dry-run and require explicit confirmation for deletion.
@@ -55,3 +58,5 @@ Edit `src/`, test, then rebuild `dist/` when a source change is intended for dep
 ## Verification
 
 Run `npm test` for utility, request-shaping, or local-server changes and `npm run build` for any frontend source change. Smoke-test `npm start` after build-tool changes. For UI changes, also exercise the form locally at desktop and mobile widths without submitting to production unless the user authorizes it.
+
+For deployment-script changes, run `npm test`, parse `deploy.ps1` with the PowerShell parser, and exercise only the default dry-run path unless production deployment is explicitly approved.

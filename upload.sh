@@ -1,8 +1,15 @@
-#!/bin/bash
-SITE_S3='s3://daviseford.com/word-art/'    # Your S3 bucket address
-SITE_BUILD_DIR='./dist/'                            # Where your site is generated
-CF_DIST_ID='EOV559H6J3O6V'  # Cloudfront Distribution ID
-CF_PATH='/word-art/*'       # Cloudfront Path to invalidate
-npm i && npm run build
-aws s3 sync --delete --size-only ${SITE_BUILD_DIR} ${SITE_S3} --exclude "*build_log.txt" --exclude "*.idea*" --exclude "*.sh" --exclude "*.git*" --exclude "*.DS_Store"
-aws cloudfront create-invalidation --distribution-id ${CF_DIST_ID} --paths ${CF_PATH}
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if command -v pwsh >/dev/null 2>&1; then
+  exec pwsh -NoProfile -File "${SCRIPT_DIR}/deploy.ps1" "$@"
+fi
+
+if command -v powershell.exe >/dev/null 2>&1; then
+  exec powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${SCRIPT_DIR}/deploy.ps1" "$@"
+fi
+
+echo "PowerShell is required. Run ./deploy.ps1 from PowerShell instead." >&2
+exit 1

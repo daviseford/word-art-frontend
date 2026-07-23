@@ -30,7 +30,19 @@ The configured APIs are production services. Loading the page locally is safe; s
 
 ## Deployment
 
-`upload.sh` builds and synchronizes `dist/` to the production website bucket, then invalidates CloudFront. Run it only with explicit production approval and correctly scoped AWS credentials.
+The canonical deployment command is a safe-by-default PowerShell script:
+
+```powershell
+# Install, test, build, and preview the S3 changes. Production is not mutated.
+.\deploy.ps1
+
+# Repeat those checks, upload to S3, invalidate CloudFront, wait, and smoke-test.
+.\deploy.ps1 -Apply
+```
+
+Production deployment requires explicit approval and correctly scoped AWS credentials. The compatibility wrapper `bash ./upload.sh` delegates to the same PowerShell script and accepts `-Apply`.
+
+Read the [frontend deployment runbook](docs/FRONTEND_DEPLOYMENT.md) for prerequisites, exact behavior, manual recovery commands, verification, and rollback.
 
 ## Known boundary
 
