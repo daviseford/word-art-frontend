@@ -10,10 +10,16 @@ describe('generator interface', function () {
     path.resolve(__dirname, '..', 'src', 'index.html'),
     'utf8',
   );
+  const styles = fs.readFileSync(
+    path.resolve(__dirname, '..', 'src', 'app.css'),
+    'utf8',
+  );
 
   it('keeps the original text and color tools discoverable', function () {
     expect(template).to.contain('https://www.gutenberg.org/browse/scores/top');
     expect(template).to.contain('Create your own');
+    expect(template).to.not.contain('<p class="eyebrow">The composer</p>');
+    expect(template).to.not.contain('Paste at least 20 distinct sentences.');
     expect(template).to.contain('<details class="advanced-controls" open>');
     expect(template).to.contain('id="input_line_color_picker"');
     expect(template).to.contain('id="input_line_bg_color_picker"');
@@ -42,5 +48,11 @@ describe('generator interface', function () {
     expect(preview).to.contain('Start / end');
     expect(preview).to.contain('Highlight');
     expect(preview).to.not.contain('Primary');
+  });
+
+  it('replays the sentence-path explanation without forcing motion', function () {
+    expect(styles).to.contain('animation-duration: 8s;');
+    expect(styles).to.contain('animation-iteration-count: infinite;');
+    expect(styles).to.contain('.hero-art__segment, .hero-art__label { animation: none !important;');
   });
 });

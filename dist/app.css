@@ -71,9 +71,7 @@
   .hero-art figcaption span + span::before { margin-right: 0.75rem; color: var(--rule); content: "→"; }
 
   .composer-section { padding-block: clamp(2.75rem, 6vw, 4.5rem); border-top: 1px solid var(--rule); background: var(--surface); scroll-margin-top: 1rem; }
-  .section-heading { display: grid; gap: 0.75rem 2rem; align-items: end; margin-bottom: clamp(1.75rem, 4vw, 3rem); }
-  .section-heading h2 { margin-top: 0.4rem; }
-  .section-heading > p { max-width: 32rem; color: var(--muted); font-size: clamp(0.95rem, 1.6vw, 1.1rem); }
+  .section-heading { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
   .studio-layout { max-width: 68rem; margin-inline: auto; }
   .composer-panel { min-width: 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); }
 
@@ -130,7 +128,6 @@
 @layer responsive {
   @media (min-width: 42rem) {
     :root { --shell: min(100% - 3.5rem, 76rem); }
-    .section-heading { grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.75fr); }
     .palette-preview { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .advanced-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .advanced-grid__wide { grid-column: 1 / -1; }
@@ -150,22 +147,57 @@
 
 @layer motion {
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes draw-segment { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-  @keyframes reveal-label { from { opacity: 0; transform: translateY(0.3rem); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes draw-segment-one {
+    0%, 4% { stroke-dashoffset: 1; }
+    14%, 100% { stroke-dashoffset: 0; }
+  }
+  @keyframes draw-segment-two {
+    0%, 16% { stroke-dashoffset: 1; }
+    26%, 100% { stroke-dashoffset: 0; }
+  }
+  @keyframes draw-segment-three {
+    0%, 28% { stroke-dashoffset: 1; }
+    40%, 100% { stroke-dashoffset: 0; }
+  }
+  @keyframes reveal-label-one {
+    0%, 12% { opacity: 0; transform: translateY(0.3rem); }
+    16%, 100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes reveal-label-two {
+    0%, 24% { opacity: 0; transform: translateY(0.3rem); }
+    28%, 100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes reveal-label-three {
+    0%, 38% { opacity: 0; transform: translateY(0.3rem); }
+    42%, 100% { opacity: 1; transform: translateY(0); }
+  }
   @keyframes page-in { from { opacity: 0; transform: translateY(0.6rem); } to { opacity: 1; transform: translateY(0); } }
   .hero__copy, .hero-art { animation: page-in 450ms var(--ease-out) both; }
   .hero-art { animation-delay: 80ms; }
-  .hero-art__segment { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-segment 480ms var(--ease-out) both; }
-  .hero-art__segment--one { animation-delay: 250ms; }
-  .hero-art__segment--two { animation-delay: 700ms; }
-  .hero-art__segment--three { animation-delay: 1150ms; }
-  .hero-art__label { opacity: 0; animation: reveal-label 300ms var(--ease-out) both; }
-  .hero-art__label--one { animation-delay: 610ms; }
-  .hero-art__label--two { animation-delay: 1060ms; }
-  .hero-art__label--three { animation-delay: 1510ms; }
+  .hero-art__segment {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: var(--ease-out);
+  }
+  .hero-art__segment--one { animation-name: draw-segment-one; }
+  .hero-art__segment--two { animation-name: draw-segment-two; }
+  .hero-art__segment--three { animation-name: draw-segment-three; }
+  .hero-art__label {
+    opacity: 0;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: var(--ease-out);
+  }
+  .hero-art__label--one { animation-name: reveal-label-one; }
+  .hero-art__label--two { animation-name: reveal-label-two; }
+  .hero-art__label--three { animation-name: reveal-label-three; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .hero-art__segment, .hero-art__label { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .hero-art__segment { stroke-dashoffset: 0 !important; }
   }
 }
