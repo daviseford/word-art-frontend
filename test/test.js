@@ -38,6 +38,14 @@ describe('Util.toHex', function () {
   });
 });
 
+describe('Util.toPickerHex', function () {
+  it('should return six-digit colors accepted by native color inputs', function () {
+    expect(Util.toPickerHex('#20c20e')).to.equal('#20C20E');
+    expect(Util.toPickerHex('#abc')).to.equal('#AABBCC');
+    expect(Util.toPickerHex('sometext')).to.equal(null);
+  });
+});
+
 describe('Util.getSplitText', function () {
   it('should ignore blank highlight terms and disable empty split input', function () {
     expect(Util.getSplitText('quality, ,logic,')).to.have.ordered.members(['quality', 'logic']);

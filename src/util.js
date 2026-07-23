@@ -126,6 +126,19 @@ Util.toHex = (txt) => {
 };
 
 /**
+ * Normalizes a hex color for a native color input, which requires six digits.
+ * @param txt
+ * @returns {string|null}
+ */
+Util.toPickerHex = (txt) => {
+  const hex = Util.toHex(txt);
+  if (!hex) return null;
+  return hex.length === 4
+    ? `#${hex.slice(1).split('').map(character => character + character).join('')}`
+    : hex;
+};
+
+/**
  * Remove empty top-level keys from an object
  * @param obj
  * @returns {{}}

@@ -13,7 +13,7 @@ $(document).ready(() => {
   const color_input_fields = ['input_line_bg_color', 'input_split_color', 'input_line_color'];
 
   /* Add our preset options to the select menu */
-  preset_select.html(Components.getPresetOptions())
+  preset_select.html(Components.getPresetOptions(Config.default_preset))
   preset_select.change(function (event) {
     const preset = event.currentTarget.value || null;
     const config = Colors.Combos.find(combo => combo.id === preset);
@@ -23,7 +23,7 @@ $(document).ready(() => {
       $('#input_node_colors').val(config.node_colors.join(', '));
       $('#input_split_color').val(config.split_color);
       preset_div.html(Components.makeSwatchHTML(config));
-      color_input_fields.forEach(x => $(`#${x}`).change())  // trigger change
+      color_input_fields.forEach(input => $(`#${input}`).change())
       console.log(`Updated with color preset ${config.name}.`);
     } else {
       preset_div.html(null);
@@ -42,19 +42,30 @@ $(document).ready(() => {
     form.show(0);
   };
 
-  const update_icon_color = (input, hex) => {
-    if (Util.isHexCode(hex)) {
-      $(`#${input}_icon`).css('background-color', Util.toHex(hex))
-    }
-  }
+  const bindColorPicker = (textInputId, pickerInputId) => {
+    const textInput = $(`#${textInputId}`);
+    const pickerInput = $(`#${pickerInputId}`);
+    const syncPicker = () => {
+      const color = Util.toPickerHex(textInput.val());
+      if (color) pickerInput.val(color);
+    };
 
-  const make_icon_dynamic = (input) => {
-    $(`#${input}`)
-      .bind('input', (e) => update_icon_color(input, e.target.value))
-      .on('change', (e) => update_icon_color(input, e.target.value))
-  }
+    textInput.on('input change', syncPicker);
+    pickerInput.on('input change', event => {
+      textInput.val(event.target.value.toUpperCase()).trigger('input');
+    });
+    syncPicker();
+  };
 
-  color_input_fields.forEach(make_icon_dynamic);  // make the icons change color dynamically
+  bindColorPicker('input_line_color', 'input_line_color_picker');
+  bindColorPicker('input_line_bg_color', 'input_line_bg_color_picker');
+  bindColorPicker('input_split_color', 'input_split_color_picker');
+  color_input_fields.concat(['input_node_colors']).forEach(input => {
+    $(`#${input}`).on('input', () => {
+      preset_select.val('');
+      preset_div.empty();
+    });
+  });
   preset_select.val(Config.default_preset).trigger('change');
 
   const input_text = $('#input_text');

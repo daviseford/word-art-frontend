@@ -69,22 +69,31 @@ Components.preview = (png_url) => `
   </a>`;
 
 Components.makeSwatchHTML = (config_obj) => `
-  <div class="palette-preview" aria-label="Selected palette">
+  <div class="palette-preview" aria-label="Selected palette" role="list">
     ${[
-      { color: config_obj.bg_color, name: 'Background' },
-      { color: config_obj.color, name: 'Line' },
-      { color: config_obj.split_color, name: 'Highlight' },
+      { colors: [config_obj.bg_color], name: 'Canvas' },
+      { colors: [config_obj.color], name: 'Path' },
+      { colors: config_obj.node_colors, name: 'Start / end' },
+      { colors: [config_obj.split_color], name: 'Highlight' },
     ].map(item => `
-      <div class="palette-preview__color">
-        <span style="background-color:${escapeHtml(item.color)}"></span>
-        <small>${item.name}<b>${escapeHtml(item.color)}</b></small>
+      <div class="palette-preview__color" role="listitem">
+        <span class="palette-preview__swatches" aria-hidden="true">
+          ${item.colors.map(color => `<i style="background-color:${escapeHtml(color)}"></i>`).join('')}
+        </span>
+        <span class="palette-preview__label">
+          <strong>${item.name}</strong>
+          <small>${item.colors.map(escapeHtml).join(' / ')}</small>
+        </span>
       </div>`).join('')}
   </div>`;
 
-Components.getPresetOptions = () => {
-  const opts = Colors.Combos.map(combo => `<option value="${escapeHtml(combo.id)}">${escapeHtml(combo.name)}</option>`);
-  opts.unshift('<option value="">Custom palette</option>');
-  return opts;
+Components.getPresetOptions = (selectedId) => {
+  const opts = Colors.Combos.map(combo => {
+    const selected = combo.id === selectedId ? ' selected' : '';
+    return `<option value="${escapeHtml(combo.id)}"${selected}>${escapeHtml(combo.name)}</option>`;
+  });
+  opts.unshift('<option value="">Custom colors</option>');
+  return opts.join('');
 };
 
 module.exports = Components;
